@@ -1,0 +1,58 @@
+@startuml
+
+hide footbox
+title data_flow
+
+actor customer
+participant customer_wallet
+database DNS
+participant merchant_wallet
+actor merchant
+box "Node/Miner"
+    boundary merchantAPI
+    control bitcoind
+end box
+
+
+autonumber
+customer-->merchant: click "pay now" (optional)
+merchant->merchant_wallet: request payment from [customer] paymail
+merchant_wallet->DNS ++: host discovery
+return host & port
+merchant_wallet->customer_wallet ++: capability discovery
+return capabilities & URIs
+
+group if no un-expired quote available
+merchant_wallet->merchantAPI ++: GET feeQuote()
+autonumber stop
+merchantAPI -\ bitcoind
+merchantAPI \- bitcoind
+autonumber 8
+return feeQuoteResponse
+end
+
+merchant_wallet->customer_wallet: Payment Request [BIP270]
+
+customer_wallet->customer ++: Authorize?
+return click "OK"
+
+customer_wallet->merchant_wallet: Payment [BIP270]
+merchant_wallet->merchantAPI ++: POST submitTransaction(Tx)
+autonumber stop
+merchantAPI -\ bitcoind
+merchantAPI \- bitcoind
+autonumber 14
+return transactionResponse
+
+merchant_wallet->customer_wallet: Payment ACK [BIP270]
+
+
+merchant_wallet->merchantAPI ++: GET queryTransactionStatus(Tx)
+autonumber stop
+merchantAPI -\ bitcoind
+merchantAPI \- bitcoind
+autonumber 17
+return transactionStatus
+
+
+@enduml
