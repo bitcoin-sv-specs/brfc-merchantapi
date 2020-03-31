@@ -1,3 +1,9 @@
+## RFC Notice
+
+This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](./issues) on this github repository.
+
+A beta reference implementation of the Merchant API server is available at https://github.com/bitcoin-sv/merchantapi-reference
+
 # Merchant API Spec
 
 |     BRFC     |    title     | authors | version |
