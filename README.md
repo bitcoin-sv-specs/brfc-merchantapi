@@ -2,7 +2,7 @@
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
-A beta reference implementation of the Merchant API server is available at https://github.com/bitcoin-sv/merchantapi-reference
+A beta reference implementation of the Merchant API server is available [here](https://github.com/bitcoin-sv/merchantapi-reference).
 
 # Merchant API Spec
 
@@ -14,7 +14,7 @@ A beta reference implementation of the Merchant API server is available at https
 
 Merchant API is an additional service that miners can offer to merchants.
 
-> Note: this protocol uses the [JSON envelopes BRFC](../brfc-misc/jsonenvelope/README.md) as well as the [Fee Spec BRFC](../brfc-misc/feespec/README.md).
+> Note: this protocol uses the [JSON envelopes BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) as well as the [Fee Spec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec).
 
 ## Implementation
 
@@ -50,7 +50,7 @@ GET /mapi/tx/{hash:[0-9a-fA-F]+}
 
 #### Purpose:
 
-This endpoint returns a [JSONEnvelope](../brfc-misc/jsonenvelope/README.md) with a payload that contains the fees charged by a specific BSV miner. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+This endpoint returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the fees charged by a specific BSV miner. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
 #### Returns:
 
@@ -119,7 +119,7 @@ Payload:
 | `currentHighestBlockHash`   | hash of current blockchain tip                                                               |
 | `currentHighestBlockHeight` | hash of current blockchain tip                                                               |
 | `minerReputation`           | reputation of miner                                                                          |
-| `fees`                      | fees charged by miner ([feeSpec BRFC](https://bitbucket.org/nchteamnch/feespec/src/master/)) |
+| `fees`                      | fees charged by miner ([feeSpec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec)) |
 
 ### Submit transaction
 
@@ -195,7 +195,7 @@ This endpoint is used to check the current status of a previously submitted tran
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"signatureValidFrom\":\"0001-01-01T00:00:00.000Z\",\"txSecondMempoolExpiry\":0}",
+  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100f78a6ac49ef38fbe68db609ff194d22932d865d93a98ee04d2ecef5016872ba50220387bf7e4df323bf4a977dd22a34ea3ad42de1a2ec4e5af59baa13258f64fe0e5",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "json",
@@ -223,7 +223,6 @@ Payload:
   "blockHeight": 0,
   "minerId": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "confirmations": 0,
-  "signatureValidFrom": "0001-01-01T00:00:00.000Z",
   "txSecondMempoolExpiry": 0
 }
 ```
@@ -238,7 +237,6 @@ Payload:
 | `blockHeight`           | hash of tx block                                        |
 | `minerId`               | minerId public key of miner                             |
 | `confirmations`         | number of block confirmations                           |
-| `signatureValidFrom`    | number of block confirmations                           |
 | `txSecondMempoolExpiry` | Duration (minutes) Tx will be kept in secondary mempool |
 
 OR
