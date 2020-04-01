@@ -59,7 +59,7 @@ This endpoint returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-
   "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-28T11:15:03.722Z\",\"expiryTime\":\"2020-01-28T11:25:03.722Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"000000000000000001cedc3dec00ecd29943a275498e812e72b2afdf5df8814a\",\"currentHighestBlockHeight\":619574,\"minerReputation\":\"N/A\",\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":1,\"bytes\":1},\"relayFee\":{\"satoshis\":1,\"bytes\":1}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":1,\"bytes\":1},\"relayFee\":{\"satoshis\":1,\"bytes\":1}}]}",
   "signature": "304402202a7f70855739a6948c00c2a85dd733f087c4f1ae4beb256c225eadab767d5e1d02207870c57728166f61b0334bd89640d6d6c26f31ada4aac42b29971ebfa5c414e1",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
-  "encoding": "json",
+  "encoding": "UTF-8",
   "mimetype": "applicaton/json"
 }
 ```
@@ -144,7 +144,7 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
   "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:40:29.826Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"71a7374389afaec80fcabbbf08dcd82d392cf68c9a13fe29da1a0c853facef01\",\"currentHighestBlockHeight\":207,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100f65ae83b20bc60e7a5f0e9c1bd9aceb2b26962ad0ee35472264e83e059f4b9be022010ca2334ff088d6e085eb3c2118306e61ec97781e8e1544e75224533dcc32379",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
-  "encoding": "json",
+  "encoding": "UTF-8",
   "mimetype": "applicaton/json"
 }
 ```
@@ -198,7 +198,7 @@ This endpoint is used to check the current status of a previously submitted tran
   "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100f78a6ac49ef38fbe68db609ff194d22932d865d93a98ee04d2ecef5016872ba50220387bf7e4df323bf4a977dd22a34ea3ad42de1a2ec4e5af59baa13258f64fe0e5",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
-  "encoding": "json",
+  "encoding": "UTF-8",
   "mimetype": "applicaton/json"
 }
 ```
@@ -246,7 +246,7 @@ OR
   "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T12:09:37.394Z\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4\",\"blockHeight\":208,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":2,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100c9a712a124ff3100e26f7bbcc87204848cc2ff1effacd8d8e8daac5d81bce74c02201dd661aad00d2cde443a076475cfb7d6523e0ef98a1112e938af002ca5222fbe",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
-  "encoding": "json",
+  "encoding": "UTF-8",
   "mimetype": "applicaton/json"
 }
 ```
