@@ -60,7 +60,7 @@ This endpoint returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-
   "signature": "304402202a7f70855739a6948c00c2a85dd733f087c4f1ae4beb256c225eadab767d5e1d02207870c57728166f61b0334bd89640d6d6c26f31ada4aac42b29971ebfa5c414e1",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
-  "mimetype": "applicaton/json"
+  "mimetype": "application/json"
 }
 ```
 
@@ -145,7 +145,7 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
   "signature": "3045022100f65ae83b20bc60e7a5f0e9c1bd9aceb2b26962ad0ee35472264e83e059f4b9be022010ca2334ff088d6e085eb3c2118306e61ec97781e8e1544e75224533dcc32379",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
-  "mimetype": "applicaton/json"
+  "mimetype": "application/json"
 }
 ```
 
@@ -199,7 +199,7 @@ This endpoint is used to check the current status of a previously submitted tran
   "signature": "3045022100f78a6ac49ef38fbe68db609ff194d22932d865d93a98ee04d2ecef5016872ba50220387bf7e4df323bf4a977dd22a34ea3ad42de1a2ec4e5af59baa13258f64fe0e5",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
-  "mimetype": "applicaton/json"
+  "mimetype": "application/json"
 }
 ```
 
@@ -247,7 +247,7 @@ OR
   "signature": "3045022100c9a712a124ff3100e26f7bbcc87204848cc2ff1effacd8d8e8daac5d81bce74c02201dd661aad00d2cde443a076475cfb7d6523e0ef98a1112e938af002ca5222fbe",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
-  "mimetype": "applicaton/json"
+  "mimetype": "application/json"
 }
 ```
 
