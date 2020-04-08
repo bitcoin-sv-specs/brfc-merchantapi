@@ -4,7 +4,7 @@ This draft spec is released as an RFC (request for comment) as part of the publi
 
 A beta reference implementation of the Merchant API server is available [here](https://github.com/bitcoin-sv/merchantapi-reference).
 
-# Merchant API Spec
+# Merchant API Specification
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
