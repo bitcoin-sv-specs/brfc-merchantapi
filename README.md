@@ -195,6 +195,7 @@ Payload:
 {
   "apiVersion": "0.1.0",
   "timestamp": "2020-01-15T11:41:29.032Z",
+  "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
   "returnResult": "failure",
   "resultDescription": "Transaction in mempool but not yet in block",
   "blockHash": "",
@@ -211,6 +212,7 @@ Payload:
 {
   "apiVersion": "0.1.0",
   "timestamp": "2020-01-15T12:09:37.394Z",
+  "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
   "returnResult": "success",
   "resultDescription": "",
   "blockHash": "745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4",
@@ -225,6 +227,7 @@ Payload:
 | ----------------------- | ------------------------------------------------------- |
 | `apiVersion`            | version of merchant api spec                            |
 | `timestamp`             | timestamp of payload document                           |
+| `txid`                  | transaction ID                                          |
 | `returnResult`          | will contain either success or failure                  |
 | `resultDescription`     | will contain the error on failure or empty on success   |
 | `blockHash`             | hash of tx block                                        |
