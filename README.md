@@ -8,13 +8,15 @@ A beta reference implementation of the Merchant API server is available [here](h
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| eaad81dc6d4d | merchant_api | nChain  |   0.1   |
+| 9428bb5bfba1 | merchant_api | nChain  |   1.0   |
 
 ## Overview
 
 Merchant API is an additional service that miners can offer to merchants.
 
 > Note: this protocol uses the [JSON envelopes BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) as well as the [Fee Spec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec).
+
+---
 
 ## Implementation
 
@@ -45,6 +47,8 @@ body:
 ```
 GET /mapi/tx/{hash:[0-9a-fA-F]+}
 ```
+
+---
 
 ### Get fee quote
 
