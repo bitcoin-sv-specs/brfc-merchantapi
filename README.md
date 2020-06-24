@@ -179,7 +179,7 @@ Payload:
 | `minerId`                   | minerId public key of miner                             |
 | `currentHighestBlockHash`   | hash of current blockchain tip                          |
 | `currentHighestBlockHeight` | hash of current blockchain tip                          |
-| `txSecondMempoolExpiry`     | Duration (minutes) Tx will be kept in secondary mempool |
+| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
 
 ### Query transaction status
 
@@ -234,7 +234,7 @@ Payload:
 | `blockHeight`           | hash of tx block                                        |
 | `minerId`               | minerId public key of miner                             |
 | `confirmations`         | number of block confirmations                           |
-| `txSecondMempoolExpiry` | Duration (minutes) Tx will be kept in secondary mempool |
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
 
 ---
 
