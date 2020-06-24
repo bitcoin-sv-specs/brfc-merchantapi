@@ -174,8 +174,8 @@ Payload:
 | `apiVersion`                | version of merchant api spec                            |
 | `timestamp`                 | timestamp of payload document                           |
 | `txid`                      | transaction ID                                          |
-| `returnResult`              | will contain either success or failure                  |
-| `resultDescription`         | will contain the error on failure or empty on success   |
+| `returnResult`              | will contain either `success` or `failure`                  |
+| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
 | `minerId`                   | minerId public key of miner                             |
 | `currentHighestBlockHash`   | hash of current blockchain tip                          |
 | `currentHighestBlockHeight` | hash of current blockchain tip                          |
@@ -228,8 +228,8 @@ Payload:
 | `apiVersion`            | version of merchant api spec                            |
 | `timestamp`             | timestamp of payload document                           |
 | `txid`                  | transaction ID                                          |
-| `returnResult`          | will contain either success or failure                  |
-| `resultDescription`     | will contain the error on failure or empty on success   |
+| `returnResult`          | will contain either `success` or `failure`                  |
+| `resultDescription`     | will contain the error on `failure` or empty on `success`   |
 | `blockHash`             | hash of tx block                                        |
 | `blockHeight`           | hash of tx block                                        |
 | `minerId`               | minerId public key of miner                             |
