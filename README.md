@@ -350,9 +350,9 @@ This endpoint is used to send multiple raw transactions to a miner for inclusion
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"000000000000000002b960f6569b5b968d84de40a85cf7831ed61afe935ed04c\",\"currentHighestBlockHeight\":640821,\"txSecondMempoolExpiry\":0,\"failureCount\":1,\"txs\":[{\"txid\":\"c013c468b94a600f9c505155e5bd23f9ce12bf07242f6251c5778aa0d087b4de\",\"returnResult\":\"success\",\"resultDescription\":\"\"},{\"txid\":\"2dfe4b326d0ae541a3a01bd567428d358009ebaedeb1cc0d6b30d7732525c863\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\"},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\"}]}",
-  "signature": "304402204d520b905c2c3b52a254f4b8b661473235139530b892696bfce52bcc992ff4f302203b8fbd33b1c2a1f92b559c5930ba95682a8d77d069863aef5d0d2344b3fa7355",
-  "publicKey": "03da105d3eb8d5d8b1e69c02be4b1499f4fa81926202cc53ff17d21ea5652ab3cb",
+  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"000000000000000002b960f6569b5b968d84de40a85cf7831ed61afe935ed04c\",\"currentHighestBlockHeight\":640821,\"txSecondMempoolExpiry\":0,\"txs\":[{\"txid\":\"c013c468b94a600f9c505155e5bd23f9ce12bf07242f6251c5778aa0d087b4de\",\"returnResult\":\"success\",\"resultDescription\":\"\"},{\"txid\":\"2dfe4b326d0ae541a3a01bd567428d358009ebaedeb1cc0d6b30d7732525c863\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\"},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\"}],\"failureCount\":1}",
+  "signature": "304402205dbfa6ade5f063e100a1b8feceb7a19f38b2c625e59d279a2048922760ae7b580220458798bd093184a65d7ec574a0bf7df686f8d0ae7905382cd9413b4dc3bc8c42",
+  "publicKey": "03edf1199c2186f4f4ae5a0b933ce2b0181ec2f17b28c2d4c226066023ba664dc0",
   "encoding": "UTF-8",
   "mimetype": "application/json"
 }
@@ -376,7 +376,6 @@ Payload:
   "currentHighestBlockHash": "000000000000000002b960f6569b5b968d84de40a85cf7831ed61afe935ed04c",
   "currentHighestBlockHeight": 640821,
   "txSecondMempoolExpiry": 0,
-  "failureCount": 1,
   "txs": [
     {
       "txid": "c013c468b94a600f9c505155e5bd23f9ce12bf07242f6251c5778aa0d087b4de",
@@ -393,7 +392,8 @@ Payload:
       "returnResult": "success",
       "resultDescription": "",
     }
-  ]
+  ],
+  "failureCount": 1
 }
 ```
 
@@ -405,11 +405,11 @@ Payload:
 | `currentHighestBlockHash`   | hash of current blockchain tip                          |
 | `currentHighestBlockHeight` | hash of current blockchain tip                          |
 | `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
-| `failureCount`                 | number of failed transaction submissions |
 | `txs`                      | list of transaction responses                            |
 | `txid`                      | transaction ID                                          |
 | `resultDescription`         | will contain the error on `failure` or empty on `success`   |
 | `returnResult`              | will contain either `success` or `failure`                  |
+| `failureCount`                 | number of failed transaction submissions |
 
 ### Send multi-transaction status query
 
@@ -431,9 +431,9 @@ This endpoint is used to check the statuses of multiple previously submitted tra
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"txSecondMempoolExpiry\":0,\"failureCount\":1,\"txs\":[{\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\",\"blockHeight\":208,\"confirmations\":2},{\"txid\":\"aee1ca20212b2e9ac879c1d31639d4bcc34f9b761465d6567ceeb0365ba584e9\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"confirmations\":0},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"0000000000000000030f9231d25b599c0e84a53e7011f29a50fbe4b87837ae79\",\"blockHeight\":206,\"confirmations\":4}]}",
-  "signature": "3044022100a5ecc6825777e4d9effea54ccfaa1b9a73e01c71eed477d314e473b514f2e433021f5fa090020f95f85317faf0fcb3e535d6294f6e7f44c1c58be6557690e921b7",
-  "publicKey": "023aa659d7141c9b09ab7e406f041f20d901076cb4ed822e95338f1499e2292070",
+  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"txSecondMempoolExpiry\":0,\"txs\":[{\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\",\"blockHeight\":208,\"confirmations\":2},{\"txid\":\"aee1ca20212b2e9ac879c1d31639d4bcc34f9b761465d6567ceeb0365ba584e9\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"confirmations\":0},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"0000000000000000030f9231d25b599c0e84a53e7011f29a50fbe4b87837ae79\",\"blockHeight\":206,\"confirmations\":4}],\"failureCount\":1}",
+  "signature": "3045022100ab4b11d5cf5f771ef1f0f5a4e9c5f5a066517f022ca2aedea84b698cb059432902204754d477f6330fda6d38697d22c25025882404bc0b0473c1ddd568d5592931b7",
+  "publicKey": "03dbd53be94ad3363d5671b66d30beb0f06b1a56ea4623f52bf2648501d76c34c8",
   "encoding": "UTF-8",
   "mimetype": "application/json"
 }
@@ -455,7 +455,6 @@ Payload:
   "timestamp": "2020-06-15T12:09:37.394Z",
   "minerId": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "txSecondMempoolExpiry": 0,
-  "failureCount": 1,
   "txs": [
     {
       "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
@@ -481,7 +480,8 @@ Payload:
       "blockHeight": 206,
       "confirmations": 4,
     }
-  ]
+  ],
+  "failureCount": 1
 }
 ```
 
@@ -491,7 +491,6 @@ Payload:
 | `timestamp`             | timestamp of payload document                           |
 | `minerId`               | minerId public key of miner                             |
 | `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
-| `failureCount`                 | number of failed transaction queries |
 | `txs`                      | list of transaction responses                            |
 | `txid`                  | transaction ID                                          |
 | `returnResult`          | will contain either `success` or `failure`                  |
@@ -499,6 +498,7 @@ Payload:
 | `blockHash`             | hash of tx block                                        |
 | `blockHeight`           | hash of tx block                                        |
 | `confirmations`         | number of block confirmations                           |
+| `failureCount`                 | number of failed transaction queries |
 
 ---
 
