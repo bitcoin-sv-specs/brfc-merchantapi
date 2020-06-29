@@ -54,11 +54,13 @@ GET /mapi/tx/{hash:[0-9a-fA-F]+}
 
 ## Responses
 
-All responses returned by mAPI are returned in [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) format. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+### Get fee quote
 
-### JSON Envelope Response
+#### Purpose:
 
-The following is an example response to a **get fee quote** request. The response payload ([shown below](#get-fee-quote)) is stringified, signed, and put in [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) format.
+This endpoint is used to get the different fees quoted by a miner. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the fees charged by a specific BSV miner. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+
+#### Returns:
 
 ```json
 {
@@ -76,15 +78,7 @@ The following is an example response to a **get fee quote** request. The respons
 | `signature` | signature on payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
-| `mimetype`  | Multipurpose Internet Mail Extensions type          |
-
-### Get fee quote
-
-#### Purpose:
-
-This endpoint returns the fees charged by a specific BSV miner.
-
-#### Returns:
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -139,7 +133,7 @@ Payload:
 
 #### Purpose:
 
-This endpoint is used to send a raw transaction to a miner for inclusion in the next block that the miner creates.
+This endpoint is used to send a raw transaction to a miner for inclusion in the next block that the miner creates. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the response to the transaction submission. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
 > **body** when `Content-Type` is `application/json`:
 
@@ -152,6 +146,24 @@ This endpoint is used to send a raw transaction to a miner for inclusion in the 
 When Content-Type is application/octet-stream, it is possible to upload the rawtx as a binary stream. For large transactions, this is half the size of the hexadecimal equivalent although this gain is largely minimized through the use of gzip encoding of hex data.
 
 #### Returns:
+
+```json
+{
+  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:40:29.826Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"71a7374389afaec80fcabbbf08dcd82d392cf68c9a13fe29da1a0c853facef01\",\"currentHighestBlockHeight\":207,\"txSecondMempoolExpiry\":0}",
+  "signature": "3045022100f65ae83b20bc60e7a5f0e9c1bd9aceb2b26962ad0ee35472264e83e059f4b9be022010ca2334ff088d6e085eb3c2118306e61ec97781e8e1544e75224533dcc32379",
+  "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
+}
+```
+
+| field       | function                                            |
+| ----------- | --------------------------------------------------- |
+| `payload`   | main data payload encoded in a specific format type |
+| `signature` | signature on payload string. This may be _null_.    |
+| `publicKey` | public key to verify signature. This may be _null_. |
+| `encoding`  | encoding type                                       |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -185,9 +197,27 @@ Payload:
 
 #### Purpose:
 
-This endpoint is used to check the current status of a previously submitted transaction.
+This endpoint is used to check the current status of a previously submitted transaction. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the transaction status. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
 #### Returns:
+
+```json
+{
+  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"txSecondMempoolExpiry\":0}",
+  "signature": "3045022100f78a6ac49ef38fbe68db609ff194d22932d865d93a98ee04d2ecef5016872ba50220387bf7e4df323bf4a977dd22a34ea3ad42de1a2ec4e5af59baa13258f64fe0e5",
+  "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
+}
+```
+
+| field       | function                                            |
+| ----------- | --------------------------------------------------- |
+| `payload`   | main data payload encoded in a specific format type |
+| `signature` | signature on payload string. This may be _null_.    |
+| `publicKey` | public key to verify signature. This may be _null_. |
+| `encoding`  | encoding type                                       |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -206,7 +236,39 @@ Payload:
 }
 ```
 
-##### OR
+| field                   | function                                                |
+| ----------------------- | ------------------------------------------------------- |
+| `apiVersion`            | version of merchant api spec                            |
+| `timestamp`             | timestamp of payload document                           |
+| `returnResult`          | will contain either success or failure                  |
+| `resultDescription`     | will contain the error on failure or empty on success   |
+| `blockHash`             | hash of tx block                                        |
+| `blockHeight`           | hash of tx block                                        |
+| `minerId`               | minerId public key of miner                             |
+| `confirmations`         | number of block confirmations                           |
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
+
+OR
+
+```json
+{
+  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T12:09:37.394Z\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4\",\"blockHeight\":208,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":2,\"txSecondMempoolExpiry\":0}",
+  "signature": "3045022100c9a712a124ff3100e26f7bbcc87204848cc2ff1effacd8d8e8daac5d81bce74c02201dd661aad00d2cde443a076475cfb7d6523e0ef98a1112e938af002ca5222fbe",
+  "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
+}
+```
+
+| field       | function                                            |
+| ----------- | --------------------------------------------------- |
+| `payload`   | main data payload encoded in a specific format type |
+| `signature` | signature on payload string. This may be _null_.    |
+| `publicKey` | public key to verify signature. This may be _null_. |
+| `encoding`  | encoding type                                       |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
+
+Payload:
 
 ```json
 {
@@ -222,19 +284,6 @@ Payload:
   "txSecondMempoolExpiry": 0
 }
 ```
-
-| field                   | function                                                |
-| ----------------------- | ------------------------------------------------------- |
-| `apiVersion`            | version of merchant api spec                            |
-| `timestamp`             | timestamp of payload document                           |
-| `txid`                  | transaction ID                                          |
-| `returnResult`          | will contain either `success` or `failure`                  |
-| `resultDescription`     | will contain the error on `failure` or empty on `success`   |
-| `blockHash`             | hash of tx block                                        |
-| `blockHeight`           | hash of tx block                                        |
-| `minerId`               | minerId public key of miner                             |
-| `confirmations`         | number of block confirmations                           |
-| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
 
 ---
 
