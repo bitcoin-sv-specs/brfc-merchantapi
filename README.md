@@ -66,22 +66,6 @@ body:
 ]
 ```
 
-**5. [Send multi-transaction status query](#Send-multi-transaction-status-query)**
-
-```
-POST /mapi/txs/status
-```
-
-body:
-
-```json
-[
-  "[txid]",
-  "[txid]",
-  "[txid]"
-]
-```
-
 ---
 
 ## Responses
@@ -410,95 +394,6 @@ Payload:
 | `resultDescription`         | will contain the error on `failure` or empty on `success`   |
 | `returnResult`              | will contain either `success` or `failure`                  |
 | `failureCount`                 | number of failed transaction submissions |
-
-### Send multi-transaction status query
-
-#### Purpose:
-
-This endpoint is used to check the statuses of multiple previously submitted transactions. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the transaction statuses. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
-
-> **body** when `Content-Type` is `application/json`:
-
-```json
-[
-  "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
-  "aee1ca20212b2e9ac879c1d31639d4bcc34f9b761465d6567ceeb0365ba584e9",
-  "18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b"
-]
-```
-
-#### Returns:
-
-```json
-{
-  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"txSecondMempoolExpiry\":0,\"txs\":[{\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\",\"blockHeight\":208,\"confirmations\":2},{\"txid\":\"aee1ca20212b2e9ac879c1d31639d4bcc34f9b761465d6567ceeb0365ba584e9\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"confirmations\":0},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"0000000000000000030f9231d25b599c0e84a53e7011f29a50fbe4b87837ae79\",\"blockHeight\":206,\"confirmations\":4}],\"failureCount\":1}",
-  "signature": "3045022100ab4b11d5cf5f771ef1f0f5a4e9c5f5a066517f022ca2aedea84b698cb059432902204754d477f6330fda6d38697d22c25025882404bc0b0473c1ddd568d5592931b7",
-  "publicKey": "03dbd53be94ad3363d5671b66d30beb0f06b1a56ea4623f52bf2648501d76c34c8",
-  "encoding": "UTF-8",
-  "mimetype": "application/json"
-}
-```
-
-| field       | function                                            |
-| ----------- | --------------------------------------------------- |
-| `payload`   | main data payload encoded in a specific format type |
-| `signature` | signature on payload string. This may be _null_.    |
-| `publicKey` | public key to verify signature. This may be _null_. |
-| `encoding`  | encoding type                                       |
-| `mimetype`  | multipurpose Internet Mail Extensions type          |
-
-Payload:
-
-```json
-{
-  "apiVersion": "1.1.0",
-  "timestamp": "2020-06-15T12:09:37.394Z",
-  "minerId": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
-  "txSecondMempoolExpiry": 0,
-  "txs": [
-    {
-      "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
-      "returnResult": "success",
-      "resultDescription": "",
-      "blockHash": "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09",
-      "blockHeight": 208,
-      "confirmations": 2,
-    },
-    {
-      "txid": "aee1ca20212b2e9ac879c1d31639d4bcc34f9b761465d6567ceeb0365ba584e9",
-      "returnResult": "failure",
-      "resultDescription": "Transaction in mempool but not yet in block",
-      "blockHash": "",
-      "blockHeight": 0,
-      "confirmations": 0,
-    },
-    {
-      "txid": "18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b",
-      "returnResult": "success",
-      "resultDescription": "",
-      "blockHash": "0000000000000000030f9231d25b599c0e84a53e7011f29a50fbe4b87837ae79",
-      "blockHeight": 206,
-      "confirmations": 4,
-    }
-  ],
-  "failureCount": 1
-}
-```
-
-| field                   | function                                                |
-| ----------------------- | ------------------------------------------------------- |
-| `apiVersion`            | version of merchant api spec                            |
-| `timestamp`             | timestamp of payload document                           |
-| `minerId`               | minerId public key of miner                             |
-| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
-| `txs`                      | list of transaction responses                            |
-| `txid`                  | transaction ID                                          |
-| `returnResult`          | will contain either `success` or `failure`                  |
-| `resultDescription`     | will contain the error on `failure` or empty on `success`   |
-| `blockHash`             | hash of tx block                                        |
-| `blockHeight`           | hash of tx block                                        |
-| `confirmations`         | number of block confirmations                           |
-| `failureCount`                 | number of failed transaction queries |
 
 ---
 
