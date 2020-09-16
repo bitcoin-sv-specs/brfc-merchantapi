@@ -8,7 +8,7 @@ A beta reference implementation of the Merchant API server is available [here](h
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 9428bb5bfba1 | merchant_api | nChain  |   1.0   |
+| 3e76b76bcfea | merchant_api | nChain  |   1.1   |
 
 ## Overview
 
@@ -22,7 +22,7 @@ Merchant API is an additional service that miners can offer to merchants.
 
 ## Requests
 
-The **REST API** has 3 endpoints:
+The **REST API** has 5 endpoints:
 
 **1. [Get fee quote](#get-fee-quote)**
 
@@ -48,6 +48,28 @@ body:
 
 ```
 GET /mapi/tx/{hash:[0-9a-fA-F]+}
+```
+
+**4. [Submit multiple transactions](#Submit-multiple-transactions)**
+
+```
+POST /mapi/txs
+```
+
+body:
+
+```json
+[
+  {
+    "rawtx": "[transaction_hex_string]"
+  },
+  {
+    "rawtx": "[transaction_hex_string]"
+  },
+  {
+    "rawtx": "[transaction_hex_string]"
+  }
+]
 ```
 
 ---
@@ -78,7 +100,7 @@ This endpoint is used to get the different fees quoted by a miner. It returns a 
 | `signature` | signature on payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
-| `mimetype`  | Multipurpose Internet Mail Extensions type          |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -163,7 +185,7 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
 | `signature` | signature on payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
-| `mimetype`  | Multipurpose Internet Mail Extensions type          |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -186,12 +208,12 @@ Payload:
 | `apiVersion`                | version of merchant api spec                            |
 | `timestamp`                 | timestamp of payload document                           |
 | `txid`                      | transaction ID                                          |
-| `returnResult`              | will contain either success or failure                  |
-| `resultDescription`         | will contain the error on failure or empty on success   |
+| `returnResult`              | will contain either `success` or `failure`                  |
+| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
 | `minerId`                   | minerId public key of miner                             |
 | `currentHighestBlockHash`   | hash of current blockchain tip                          |
 | `currentHighestBlockHeight` | hash of current blockchain tip                          |
-| `txSecondMempoolExpiry`     | Duration (minutes) Tx will be kept in secondary mempool |
+| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
 
 ### Query transaction status
 
@@ -217,7 +239,7 @@ This endpoint is used to check the current status of a previously submitted tran
 | `signature` | signature on payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
-| `mimetype`  | Multipurpose Internet Mail Extensions type          |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -225,6 +247,7 @@ Payload:
 {
   "apiVersion": "0.1.0",
   "timestamp": "2020-01-15T11:41:29.032Z",
+  "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
   "returnResult": "failure",
   "resultDescription": "Transaction in mempool but not yet in block",
   "blockHash": "",
@@ -245,7 +268,7 @@ Payload:
 | `blockHeight`           | hash of tx block                                        |
 | `minerId`               | minerId public key of miner                             |
 | `confirmations`         | number of block confirmations                           |
-| `txSecondMempoolExpiry` | Duration (minutes) Tx will be kept in secondary mempool |
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
 
 OR
 
@@ -265,7 +288,7 @@ OR
 | `signature` | signature on payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
-| `mimetype`  | Multipurpose Internet Mail Extensions type          |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
 
 Payload:
 
@@ -273,6 +296,7 @@ Payload:
 {
   "apiVersion": "0.1.0",
   "timestamp": "2020-01-15T12:09:37.394Z",
+  "txid": "6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0",
   "returnResult": "success",
   "resultDescription": "",
   "blockHash": "745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4",
@@ -282,6 +306,106 @@ Payload:
   "txSecondMempoolExpiry": 0
 }
 ```
+
+| field                   | function                                                |
+| ----------------------- | ------------------------------------------------------- |
+| `apiVersion`            | version of merchant api spec                            |
+| `timestamp`             | timestamp of payload document                           |
+| `txid`                  | transaction ID                                          |
+| `returnResult`          | will contain either `success` or `failure`                  |
+| `resultDescription`     | will contain the error on `failure` or empty on `success`   |
+| `blockHash`             | hash of tx block                                        |
+| `blockHeight`           | hash of tx block                                        |
+| `minerId`               | minerId public key of miner                             |
+| `confirmations`         | number of block confirmations                           |
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
+
+### Submit multiple transactions
+
+#### Purpose:
+
+This endpoint is used to send multiple raw transactions to a miner for inclusion in the next block that the miner creates. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the responses to the transaction submissions. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+
+> **body** when `Content-Type` is `application/json`:
+
+```json
+[
+  {
+    "rawtx": "0200000001f56216b33513cf621839d584f0e31566059537ef184070733a56c3b5c41d0d6d0000000049483045022100cddd5c304ff87f1733262d34b56a90061aa4b97fdc0b0e42fc3065c04e231ca402202f0c65cb6d04c2b8fc82bdcfcfd7295b6e0f717362ec395e02f6905c68ac7b7741ffffffff01805b6d29010000001976a9142a5acfb9a647a03a758afaa5c359284d4b95c0be88ac00000000"
+  },
+  {
+    "rawtx": "0200000001698562b56805aee866fb835ee1a5e874fe666e037a5c70c1e9a53223bd95d0350000000000ffffffff01805b6d29010000001976a914b0b9356ec35de3d83e261570bf7c91046c209d4488ac00000000"
+  },
+  {
+    "rawtx": "0100000001afb6269f0193eaf62d3f4e8615cef451157bf05e483f504215da0c813e41bf97030000006a47304402207758c41cdec96a8e62a4e183beb8b828f6b1a74f9339ddaeb993ddfd51fd4416022005608570cfb83c5d418a7960d8dff3a30f91fc023549b0c6d56ed2d1b8c7fe0141210368cc5b24e57d1c10dd7e5f269c250ed305d96cb4df686d58e65e8a47598b9bf2ffffffff040000000000000000fa006a223150755161374b36324d694b43747373534c4b79316b683536575755374d74555235035345540361707008746f6e6963706f770474797065106f666665725f636f6e76657273696f6e1a6f666665725f636f6e76657273696f6e5f636f6e6669675f69644037396361353766306261666439303434326634336631653862336131353566323339343536333533636663313363346537316435623835383734663062346239106f666665725f73657373696f6e5f69644061623537363231343564656430386161353664653435303566386230316131366639333739363832623237333439376561373730356530316233623436353231c4060000000000001976a91409cc4559bdcb84cb35c107743f0dbb10d66679cc88aca7430000000000001976a914685d569aa5341f7c034d2564ea96d75383468ffe88ac1a440000000000001976a9142566463dbd7e615046d4952fb5ebf3604d9b2c9688ac00000000"
+  }
+]
+```
+
+#### Returns:
+
+```json
+{
+  "payload": "{\"apiVersion\":\"1.1.0\",\"timestamp\":\"2020-06-15T12:09:37.394Z\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"000000000000000002b960f6569b5b968d84de40a85cf7831ed61afe935ed04c\",\"currentHighestBlockHeight\":640821,\"txSecondMempoolExpiry\":0,\"txs\":[{\"txid\":\"c013c468b94a600f9c505155e5bd23f9ce12bf07242f6251c5778aa0d087b4de\",\"returnResult\":\"success\",\"resultDescription\":\"\"},{\"txid\":\"2dfe4b326d0ae541a3a01bd567428d358009ebaedeb1cc0d6b30d7732525c863\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\"},{\"txid\":\"18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b\",\"returnResult\":\"success\",\"resultDescription\":\"\"}],\"failureCount\":1}",
+  "signature": "304402205dbfa6ade5f063e100a1b8feceb7a19f38b2c625e59d279a2048922760ae7b580220458798bd093184a65d7ec574a0bf7df686f8d0ae7905382cd9413b4dc3bc8c42",
+  "publicKey": "03edf1199c2186f4f4ae5a0b933ce2b0181ec2f17b28c2d4c226066023ba664dc0",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
+}
+```
+
+| field       | function                                            |
+| ----------- | --------------------------------------------------- |
+| `payload`   | main data payload encoded in a specific format type |
+| `signature` | signature on payload string. This may be _null_.    |
+| `publicKey` | public key to verify signature. This may be _null_. |
+| `encoding`  | encoding type                                       |
+| `mimetype`  | multipurpose Internet Mail Extensions type          |
+
+Payload:
+
+```json
+{
+  "apiVersion": "1.1.0",
+  "timestamp": "2020-06-15T12:09:37.394Z",
+  "minerId": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
+  "currentHighestBlockHash": "000000000000000002b960f6569b5b968d84de40a85cf7831ed61afe935ed04c",
+  "currentHighestBlockHeight": 640821,
+  "txSecondMempoolExpiry": 0,
+  "txs": [
+    {
+      "txid": "c013c468b94a600f9c505155e5bd23f9ce12bf07242f6251c5778aa0d087b4de",
+      "returnResult": "success",
+      "resultDescription": "",
+    },
+    {
+      "txid": "2dfe4b326d0ae541a3a01bd567428d358009ebaedeb1cc0d6b30d7732525c863",
+      "returnResult": "failure",
+      "resultDescription": "Missing inputs",
+    },
+    {
+      "txid": "18e6b339551fd177587aaf968281c0d400e20aa200349903bed0883b10b7612b",
+      "returnResult": "success",
+      "resultDescription": "",
+    }
+  ],
+  "failureCount": 1
+}
+```
+
+| field                       | function                                                |
+| --------------------------- | ------------------------------------------------------- |
+| `apiVersion`                | version of merchant api spec                            |
+| `timestamp`                 | timestamp of payload document                           |
+| `minerId`                   | minerId public key of miner                             |
+| `currentHighestBlockHash`   | hash of current blockchain tip                          |
+| `currentHighestBlockHeight` | hash of current blockchain tip                          |
+| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
+| `txs`                      | list of transaction responses                            |
+| `txid`                      | transaction ID                                          |
+| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
+| `returnResult`              | will contain either `success` or `failure`                  |
+| `failureCount`                 | number of failed transaction submissions |
 
 ---
 
