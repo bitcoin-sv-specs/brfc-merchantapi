@@ -107,8 +107,8 @@ Payload:
 ```json
 {
   "apiVersion": "0.1.0",
-  "timestamp": "2020-01-28T11: 15: 03.722Z",
-  "expiryTime": "2020-01-28T11: 25: 03.722Z",
+  "timestamp": "2020-01-28T11:15:03.722Z",
+  "expiryTime": "2020-01-28T11:25:03.722Z",
   "minerId": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "currentHighestBlockHash": "000000000000000001cedc3dec00ecd29943a275498e812e72b2afdf5df8814a",
   "currentHighestBlockHeight": 619574,
