@@ -22,7 +22,13 @@ Merchant API (mAPI) is an additional service that miners can offer to merchants.
 
 The **REST API** has 4 endpoints:
 
-**1. [Get fee quote](#get-fee-quote)**
+1. [Get fee quote](#1.-get-fee-quote)
+2. [Submit transaction](#2.-Submit-transaction)
+3. [Query transaction status](#3.-Query-transaction-status)
+4. [Submit multiple transactions](#4.-Submit-multiple-transactions)
+
+
+### 1. Get fee quote
 
 #### Purpose:
 
@@ -107,7 +113,7 @@ GET /mapi/feeQuote
 
 
 
-**2. [Submit transaction](#Submit-transaction)**
+### 2. Submit transaction
 
 #### Purpose:
 
@@ -208,7 +214,7 @@ Payload:
 If a double spend notifcation or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
 
 
-**3. [Query transaction status](#Query-transaction-status)**
+### 3. Query transaction status
 
 #### Purpose:
 
@@ -297,7 +303,7 @@ Payload:
 }
 ```
 
-**4. [Submit multiple transactions](#Submit-multiple-transactions)**
+### 4. Submit multiple transactions
 
 #### Purpose:
 
