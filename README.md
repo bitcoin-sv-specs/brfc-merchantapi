@@ -22,10 +22,10 @@ Merchant API (mAPI) is an additional service that miners can offer to merchants.
 
 The **REST API** has 4 endpoints:
 
-1. [Get fee quote](#1.-get-fee-quote)
-2. [Submit transaction](#2.-Submit-transaction)
-3. [Query transaction status](#3.-Query-transaction-status)
-4. [Submit multiple transactions](#4.-Submit-multiple-transactions)
+1. [Get fee quote](#1-get-fee-quote)
+2. [Submit transaction](#2-submit-transaction)
+3. [Query transaction status](#3-query-transaction-status)
+4. [Submit multiple transactions](#4-submit-multiple-transactions)
 
 
 ### 1. Get fee quote
