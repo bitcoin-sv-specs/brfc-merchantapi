@@ -49,7 +49,7 @@ GET /mapi/feeQuote
     "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-09-15T12:44:19.75812Z\",\"expiryTime\":\"2020-09-17T13:09:31.4573849Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"2084f6352e242c496cba0a3c45be9b69ff2ef69718b1286a9c0f9c2a1089f6ae\",\"currentHighestBlockHeight\":1334,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}]}",
     "signature": "304402202a26a937aae0906e3a624bb636718aa2c731a9b9f3775328015321865a87eee102202bbd9c23cc21fa0e806f05803359aa22ad9e019d2076b44ae625f1ff85afd664",
     "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "utf-8",
+    "encoding": "UTF-8",
     "mimetype": "application/json"
 }
 
@@ -108,7 +108,7 @@ GET /mapi/feeQuote
 | `expiryTime`                | expiry time of quote                                                                         |
 | `minerId`                   | minerID / public key of miner. This may be _null_.                                           |
 | `currentHighestBlockHash`   | hash of current blockchain tip                                                               |
-| `currentHighestBlockHeight` | hash of current blockchain tip                                                               |
+| `currentHighestBlockHeight` | height of current blockchain tip                                                               |
 | `fees`          | fees charged by miner ([feeSpec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec))                                                                          
 
 
@@ -128,16 +128,16 @@ body: when `Content-Type` is `application/json`:
 
 ```json
 {
-  "rawtx":        "[transaction_hex_string]",
-  "callBackUrl":  "https://your.service.callback/endpoint",
-  "callBackToken" : <channel token>,
+  "rawTx":        "[transaction_hex_string]",
+  "callbackUrl":  "https://your.service.callback/endpoint",
+  "callbackToken" : <channel token>,
   "merkleProof" : true,
   "dsCheck" : true,
-  "callBackEncryption" : <parameter>
+  "callbackEncryption" : <parameter>
 }
 
 ```
-To submit transaction in binary format use `Content-Type: application/octet-stream` with the binary serialized transaction in the request body. You can specify `callBackUrl`, `callBackToken`, `merkleProof`,`dsCheck` and `callBackEncryption` in the query string.
+To submit transaction in binary format use `Content-Type: application/octet-stream` with the binary serialized transaction in the request body. You can specify `callbackUrl`, `callbackToken`, `merkleProof`,`dsCheck` and `callbackEncryption` in the query string.
 
 When Content-Type is application/octet-stream, it is possible to upload the rawtx as a binary stream. For large transactions, this is half the size of the hexadecimal equivalent although this gain is largely minimized through the use of gzip encoding of hex data.
 
@@ -148,12 +148,12 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
 | `callbackToken` | HTTP authorization header used when authenticating against callbackURL                                                                |
 | `merkleProof`   | used to request a merkle proof    |
 | `dsCheck`       | used to request double spend notification  |
-| `callBackEncryption`   |   optional parameter to encrypt callback data     |
+| `callbackEncryption`   |   optional parameter to encrypt callback data     |
 
 
 *Note:*  In mAPI 1.2.3-beta, the only encryption method supported is libsodium sealed_box which is an anonymous (you can not identify the sender) public key encryption with integrity check (see here for more details: https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes )
 
-The format of callBackEncryption parameter is:
+The format of callbackEncryption parameter is:
 
     libsodium sealed_box <base64 encoded encryption key>
 
@@ -162,7 +162,7 @@ The format of callBackEncryption parameter is:
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"0.1.0\",\"timestamp\":\"2020-01-15T11:40:29.826Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"71a7374389afaec80fcabbbf08dcd82d392cf68c9a13fe29da1a0c853facef01\",\"currentHighestBlockHeight\":207,\"txSecondMempoolExpiry\":0}",
+  "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-01-15T11:40:29.826Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"currentHighestBlockHash\":\"71a7374389afaec80fcabbbf08dcd82d392cf68c9a13fe29da1a0c853facef01\",\"currentHighestBlockHeight\":207,\"txSecondMempoolExpiry\":0, \"conflictedWith\":null}",
   "signature": "3045022100f65ae83b20bc60e7a5f0e9c1bd9aceb2b26962ad0ee35472264e83e059f4b9be022010ca2334ff088d6e085eb3c2118306e61ec97781e8e1544e75224533dcc32379",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
@@ -191,7 +191,7 @@ Payload:
   "currentHighestBlockHash": "71a7374389afaec80fcabbbf08dcd82d392cf68c9a13fe29da1a0c853facef01",
   "currentHighestBlockHeight": 207,
   "txSecondMempoolExpiry": 0,
-  "conflictedWith": ""
+  "conflictedWith": null
 
 }
 ```
@@ -211,8 +211,7 @@ Payload:
 
 ### Callback Notifications
 
-If a double spend notifcation or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
-
+If a double spend notification or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
 
 ### 3. Query transaction status
 
@@ -229,7 +228,7 @@ GET /mapi/tx/{hash:[0-9a-fA-F]+}
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"txSecondMempoolExpiry\":0}",
+  "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-01-15T11:41:29.032Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"failure\",\"resultDescription\":\"Transaction in mempool but not yet in block\",\"blockHash\":\"\",\"blockHeight\":0,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":0,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100f78a6ac49ef38fbe68db609ff194d22932d865d93a98ee04d2ecef5016872ba50220387bf7e4df323bf4a977dd22a34ea3ad42de1a2ec4e5af59baa13258f64fe0e5",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
@@ -278,7 +277,7 @@ OR
 
 ```json
 {
-  "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-01-15T12:09:37.394Z\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4\",\"blockHeight\":208,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":2,\"txSecondMempoolExpiry\":0}",
+  "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-01-15T12:09:37.394Z\",\"txid\":\"6bdbcfab0526d30e8d68279f79dff61fb4026ace8b7b32789af016336e54f2f0\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"blockHash\":\"745093bb0c80780092d4ce6926e0caa753fe3accdc09c761aee89bafa85f05f4\",\"blockHeight\":208,\"minerId\":\"03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031\",\"confirmations\":2,\"txSecondMempoolExpiry\":0}",
   "signature": "3045022100c9a712a124ff3100e26f7bbcc87204848cc2ff1effacd8d8e8daac5d81bce74c02201dd661aad00d2cde443a076475cfb7d6523e0ef98a1112e938af002ca5222fbe",
   "publicKey": "03fcfcfcd0841b0a6ed2057fa8ed404788de47ceb3390c53e79c4ecd1e05819031",
   "encoding": "UTF-8",
@@ -321,23 +320,25 @@ body: where `Content-Type` is `application/json`:
 [
   {
     "rawTx": "02000000010f263640b9da7923505cbd129f585cfe49f94331e25697009e6d16f94b96de5e010000006a47304402200c27d24b1857a47bad6bb0b65db453174e2eb9135392ffa7e11d129cfc86a20f0220017e3c4116908c8aead06f0a3e16f5bfcd45e7b91ec537df7eacaee0e138c904412103610198d993495d3c4b301ab3d6ae1e48c59b271e9111947e10729c5df6176bfcffffffff0210270000000000001976a9144ea8733cb23c06ea923b7e9bb6b35463b38c465888ac78b95302000000001976a9144c0a725e2573e3800c234e9a8fe02e50cdb0f4b488ac00000000",
-    "callBackUrl":  "https://your.service.callback/endpoint",
-    "callBackToken" : <channel token>,
-    "merkleProof":true,
+    "callbackUrl":  "https://your.service.callback/endpoint",
+    "callbackToken" : <channel token>,
+    "merkleProof": true,
     "dsCheck": true,
-    "callBackEncryption" : <parameter>
+    "callbackEncryption" : <parameter>
   },
   {
     "rawTx": "02000000010f263640b9da7923505cbd129f585cfe49f94331e25697009e6d16f94b96de5e010000006a47304402200d3af721a04c00de11c4d7d136627c8361dc569e51169bd0ead03ac701acfe66022051f7d4c2fb188e4829572f66c351f78a4e4719ba29c27aebbf7eb1cedaf12f6d412103610198d993495d3c4b301ab3d6ae1e48c59b271e9111947e10729c5df6176bfcffffffff0210270000000000001976a91421d62b3787c18c991fe3a692a469db590023388088ac78b95302000000001976a914cffb48a93f2e22cc5da322728daa160847a19ea988ac00000000",
-    "callBackUrl":  "https://your.service.callback/endpoint",
-    "callBackToken" : <channel token>,
-    "merkleProof":true,
+    "callbackUrl":  "https://your.service.callback/endpoint",
+    "callbackToken" : <channel token>,
+    "merkleProof": true,
     "dsCheck": true,
-    "callBackEncryption" : <parameter>
+    "callbackEncryption" : <parameter>
   }
 ]
 
 ```
+
+You can also omit *callbackUrl*, *callbackToken*, *merkleProof* and *dsCheck* from the request body and provide the default values in the query string.
 
 #### Response:
 
@@ -377,7 +378,9 @@ Payload:
     },
     {
       "txid": "65d11409d204ea80c81152d4c12ddbd37df72a0ee73828497c14cd6a0086eaf3",
-      "returnResult": "success"
+      "returnResult": "success",
+      "resultDescription": "",
+      "conflictedWith": null
     }
   ],
   "failureCount": 1
@@ -390,7 +393,7 @@ Payload:
 | `timestamp`                 | timestamp of payload document                           |
 | `minerId`                   | minerId public key of miner                             |
 | `currentHighestBlockHash`   | hash of current blockchain tip                          |
-| `currentHighestBlockHeight` | hash of current blockchain tip                          |
+| `currentHighestBlockHeight` | height of current blockchain tip                          |
 | `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
 | `txs`                       | list of transaction responses                            |
 | `txid`                      | transaction ID                                          |
@@ -400,9 +403,12 @@ Payload:
 |                             |                                           |
 
 
+To submit transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
+
+
 ### Callback Notifications
 
-Merchants can request callbacks for *merkle proofs* and *double spend notifications* in Submit transaction
+Merchants can request callbacks for *merkle proofs* and/or *double spend notifications* in Submit transaction.
 
 Double Spend example:
 
@@ -413,9 +419,9 @@ Request Body:
 ```json
 {
     "rawtx": "02000000010b86283aa3742d76c9756490e533c42785aba9c04bff1d1b03aefc5db9696a090000000049483045022100fa0710a65f3fc9989e202040a404661c750b2b8edcf4aeca63256db57cf2ec61022029cc2253ec21727e22727509fc6b80c493455c3c21c55863c7e61a917667c1d041ffffffff0210270000000000001976a91462870360a34f460be9f70cfa4d5b5bd6705909d588ac14df2901000000001976a9141d0ef42a5362089f66250df3b876767ab0eb4d3488ac00000000",
-    "callBackUrl":"https://your-server/api/v1/channel/533",
-    "callBackToken":"CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
-    "merkleProof":false,
+    "callbackUrl": "https://your-server/api/v1/channel/533",
+    "callbackToken": "CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
+    "merkleProof": false,
     "dsCheck": true
 }
 ```
@@ -426,10 +432,83 @@ Request Body:
     "payload": "{\"apiVersion\":\"1.2.3\",\"timestamp\":\"2020-09-17T12:52:54.5817432Z\",\"txid\":\"8750e986a296d39262736ed8b8f8061c6dce1c262844e1ad674a3bc134772167\",\"returnResult\":\"failure\",\"resultDescription\":\"258 txn-mempool-conflict\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"5feae707b1dbd08fb2d58d961620e4316edeeff0c4a1ce8b007171aaf7374dd4\",\"currentHighestBlockHeight\":1333,\"txSecondMempoolExpiry\":0}",
     "signature": "304402200c3ac8054adf9b3e97e021cc1db07101df93fd80992b7e26b1643f7c2320677e02207cf8d470d048822a922015ecb1cee194a8a6268314f8ed0c36661d9c275fb25c",
     "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "utf-8",
+    "encoding": "UTF-8",
     "mimetype": "application/json"
 }
 ```
+
+Merkle proof callback can be requested by specifying:
+```json
+{
+ "merkleProof": true
+}
+```
+
+If callback was requested on transaction submit, merchant should receive a notification of doublespend and/or merkle proof via callback URL. mAPI process all requested notifications and sends them out in batches.
+Callbacks have three possible callbackReason: "doubleSpend", "doubleSpendAttempt" and "merkleProof". DoubleSpendAttempt implies, that double spend was detected in mempool.
+
+Double spend callback example:
+```json
+{	
+  "callbackPayload": "{\"doubleSpendTxId\":\"f1f8d3de162f3558b97b052064ce1d0c45805490c210bdbc4d4f8b44cd0f143e\", \"payload\":\"01000000014979e6d8237d7579a19aa657a568a3db46a973f737c120dffd6a8ba9432fa3f6010000006a47304402205fc740f902ccdadc2c3323f0258895f597fb75f92b13d14dd034119bee96e5f302207fd0feb68812dfa4a8e281f9af3a5b341a6fe0d14ff27648ae58c9a8aacee7d94121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}",
+  "apiVersion": "1.2.3",
+  "timeStamp": "2020-11-03T13:24:31.233647Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "blockHash": "34bbc00697512058cb040e1c7bbba5d03a2e94270093eb28114747430137f9b7",
+  "blockHeight": 153,
+  "callbackTxId": "8750e986a296d39262736ed8b8f8061c6dce1c262844e1ad674a3bc134772167",
+  "callbackReason": "doubleSpend"
+}
+```
+
+Double spend attempt callback example:
+```json
+{	
+  "callbackPayload": "{\"doubleSpendTxId\":\"7ea230b1610768374285150537323add313c1b9271b1b8110f5ddc629bf77f46\", \"payload\":\"0100000001e75284dc47cb0beae5ebc7041d04dd2c6d29644a000af67810aad48567e879a0000000006a47304402203d13c692142b4b50737141145795ccb5bb9f5f8505b2d9b5a35f2f838b11feb102201cee2f2fe33c3d592f5e990700861baf9605b3b0199142bbc69ae88d1a28fa964121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}",
+  "apiVersion": "1.2.3",
+  "timeStamp": "2020-11-03T13:24:31.233647Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "blockHash": "34bbc00697512058cb040e1c7bbba5d03a2e94270093eb28114747430137f9b7",
+  "blockHeight": 153,
+  "callbackTxId": "8750e986a296d39262736ed8b8f8061c6dce1c262844e1ad674a3bc134772167",
+  "callbackReason": "doubleSpendAttempt"
+}
+```
+
+Merkle proof callback example:
+```json
+{	  
+  "callbackPayload":"{\"flags\":2,\"index\":1,\"txOrId\":\"acad8d40b3a17117026ace82ef56d269283753d310ddaeabe7b5d226e8dbe973\",\"target\":{
+      \"hash\":\"0e9a2af27919b30a066383d512d64d4569590f935007198dacad9824af643177\",
+      \"confirmations\":1,
+      \"height\":152,
+      \"version\":536870912,
+      \"versionHex\":"20000000",
+      \"merkleroot\":"0298acf415976238163cd82b9aab9826fb8fbfbbf438e55185a668d97bf721a8",
+      \"num_tx\":2,
+      \"time\":1604409778,
+      \"mediantime\":1604409777,
+      \"nonce\":0,
+      \"bits\":\"207fffff\",
+      \"difficulty\":4.656542373906925E-10,
+      \"chainwork\":"0000000000000000000000000000000000000000000000000000000000000132",
+      \"previousblockhash\":"62ae67b463764d045f4cbe54f1f7eb63ccf70d52647981ffdfde43ca4979a8ee"
+    },
+    \"nodes\":[
+      "5b537f8fba7b4057971f7e904794c59913d9a9038e6900669d08c1cf0cc48133"
+    ]
+  "},
+  "apiVersion":"1.2.3",
+  "timeStamp":"2020-11-03T13:22:42.1341243Z",
+  "minerId":"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "blockHash":"0e9a2af27919b30a066383d512d64d4569590f935007198dacad9824af643177",
+  "blockHeight":152,
+  "callbackTxId":"acad8d40b3a17117026ace82ef56d269283753d310ddaeabe7b5d226e8dbe973",
+  "callbackReason":"merkleProof"
+}
+```
+
+
 
 ### Authorization/Authentication and Special Rates
 
@@ -469,7 +548,7 @@ The following should be used as authorization header:
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzcGVjaWFsdXNlciIsIm5iZiI6MTU5OTQ5NDc4OSwiZXhwIjoxNjg1ODk0Nzg5LCJpYXQiOjE1OTk0OTQ3ODksImlzcyI6Imh0dHA6Ly9teXNpdGUuY29tIiwiYXVkIjoibWVyY2hhbnRfYXBpIn0.xbtwEKdbGv1AasXe_QYsmb5sURyrcr-812cX-Ps98Yk
 
 ```
-Now anyone `specialuser` using this token will offered special fee rates when uploaded. The special fees needs to be uploaded through admin interface
+Now any `specialuser` using this token will be offered special fee rates when uploaded. The special fees needs to be uploaded through admin interface.
 
 To validate a token, you can use `validate` command:
 ```console
@@ -490,6 +569,12 @@ Admin interface can be used to add update or remove connections to this node. It
 To create a new fee quote use the following:
 ```
 POST api/v1/FeeQuote
+```
+
+Example with curl - add feeQuote valid from 01/10/2020 for anonymous user:
+
+```console
+$ curl -H "Api-Key: [RestAdminAPIKey]" -H "Content-Type: application/json" -X POST https://localhost:5051/api/v1/FeeQuote -d "{ \"validFrom\": \"2020-10-01T12:00:00\", \"identity\": null, \"identityProvider\": null, \"fees\": [{ \"feeType\": \"standard\", \"miningFee\" : { \"satoshis\": 100, \"bytes\": 200 }, \"relayFee\" : { \"satoshis\": 100, \"bytes\": 200 } }, { \"feeType\": \"data\", \"miningFee\" : { \"satoshis\": 100, \"bytes\": 200 }, \"relayFee\" : { \"satoshis\": 100, \"bytes\": 200 } }] }"
 ```
 
 To get list of all fee quotes, matching one or more criteria use the following
@@ -516,8 +601,8 @@ Note: it is not possible to delete or update a fee quote once it is published, b
 
 ### Performance
 
-mAPI 1.2.3 includes performance optimisation – in some cases submitTransaction throughput is 4x better than in mAPI 0.1.1 even though mAPI 1.2.3 stores data about transactions in database and mAPI 1.1. did not maintain any state. This is due to new RPC functions implemented on bitcoind:
--	Submittranscations RPC – enables submission of multiple transactions at the same time
+mAPI 1.2.3 includes performance optimisation - in some cases submitTransaction throughput is 4x better than in mAPI 0.1.1 even though mAPI 1.2.3 stores data about transactions in database and mAPI 1.1. did not maintain any state. This is due to new RPC functions implemented on bitcoind:
+-	Submittransactions RPC - enables submission of multiple transactions at the same time
 -	Getutxos RPC -  enables retrieval of batch of UTXOs (mAPI 1.1. had to retrieve whole transactions to obtain desired UTXO)
 
 ## Data Flow Diagram
