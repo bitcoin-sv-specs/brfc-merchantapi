@@ -8,7 +8,7 @@ A beta reference implementation of the Merchant API server is available [here](h
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 8eeed98377bd |     mAPI     | nChain  |  1.2.0  |
+| 8eeed98377bd | mAPI         | nChain  |   1.2.0 |
 
 ## Overview
 
@@ -204,7 +204,10 @@ Payload:
 | `conflictedWith`            | list of all double spend transactions                   |
 
 
-**3. [Query transaction status](#Query-transaction-status)**
+If a double spend notification or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
+Check [Callback Notifications](#callback-notifications) for details.
+
+### 3. Query transaction status
 
 #### Purpose:
 
@@ -393,8 +396,6 @@ To submit transaction in binary format use `Content-Type: application/octet-stre
 ### Callback Notifications
 
 Merchants can request callbacks for *merkle proofs* and/or *double spend notifications* in Submit transaction.
-
-If a double spend notifcation or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://bitbucket.org/nchteamnch/spvchannels-v1.0.0-beta/src/develop/), this would require the recipient to have a channel setup and ready to receive messages.
 
 Double Spend example:
 ```
