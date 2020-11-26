@@ -4,7 +4,7 @@ This draft spec is released as an RFC (request for comment) as part of the publi
 
 A reference implementation of the Merchant API server is available [here](https://github.com/bitcoin-sv/merchantapi-reference).
 
-# Merchant API Specification
+# mAPI Specification
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
@@ -582,7 +582,7 @@ Note: it is not possible to delete or update a fee quote once it is published, b
 
 ### Performance
 
-mAPI 1.2.0 includes performance optimisation - in some cases submitTransaction throughput is 4x better than in mAPI 1.1.0 even though mAPI 1.2.0 stores data about transactions in database and mAPI 1.1.0 did not maintain any state. This is due to new RPC functions implemented on bitcoind:
+mAPI 1.2.0 includes performance optimisation - in some cases submitTransaction throughput is 4x better than in mAPI 0.1.1 even though mAPI 1.2.0 stores data about transactions in database and mAPI 1.1. did not maintain any state. This is due to new RPC functions implemented on bitcoind:
 -	Submittransactions RPC - enables submission of multiple transactions at the same time
 -	Getutxos RPC -  enables retrieval of batch of UTXOs (mAPI 1.1. had to retrieve whole transactions to obtain desired UTXO)
 
