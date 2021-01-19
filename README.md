@@ -204,7 +204,7 @@ Payload:
 | `conflictedWith`            | list of all double spend transactions                   |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
+If a double spend notification or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
 Check [Callback Notifications](#callback-notifications) for details.
 
 ### 3. Query transaction status
