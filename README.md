@@ -36,9 +36,11 @@ This endpoint is used to get the different fees quoted by a miner. It returns a 
 
 #### Request:
 
-```json
+~~~
+
 GET /mapi/feeQuote
-```
+
+~~~
 
 
 #### Response:
@@ -147,7 +149,7 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
 | `callbackURL`   | HTTP(S) endpoint used to receive messages from miner                                                                 |
 | `callbackToken` | HTTP authorization header used when authenticating against callbackURL                                                                |
 | `merkleProof`   | used to request a merkle proof    |
-| `merkleFormat`   | (optional) returns TSC approved merkle proof format if set to "TSC"   |
+| `merkleFormat`   | (optional) returns TSC compliant merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
 | `callbackEncryption`   |   optional parameter to encrypt callback data     |
 
