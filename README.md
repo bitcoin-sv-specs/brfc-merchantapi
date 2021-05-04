@@ -210,8 +210,40 @@ Payload:
 | `conflictedWith`            | list of all double spend transactions                   |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the response is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages.
-Check [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or  double spend notification is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages. Check [Callback Notifications](#callback-notifications) for details.
+
+#### Callback Reason
+
+There is an option for the miner to provide a callback reason to enable client applications to determine what type of callback is returned e.g. merkle proof or double spend
+
+Request:
+
+```json
+{
+"rawTx": "0100000001b753fbcb4e99659468067c2512b64d80c593bf46d4b60f750dd77c59391c4210000000006a473044022000cc88f3feadbacfd93e2a1a723e4fa4a20ef329ab5daac3be962d973bee3fb5022031642f58b5fce72e531f9dcae49e74be95cdb2f59a312865517fa536581d85584121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
+"callbackUrl":  "https://your.service.callback/endpoint/{callbackReason}",
+"callbackToken" : <channel token>,
+"merkleProof": true,
+"merkleFormat" : "TSC",
+"dsCheck": true,
+"callbackEncryption" : <parameter>
+}
+
+Response:
+
+Sample TSC compliant merkle proof callback:
+
+{ "callbackPayload":"{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
+   "apiVersion":"1.3.0",
+   "timestamp":"2021-04-30T08:06:13.4129624Z",
+   "minerId":"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+   "blockHash":"2ad8af91739e9dc41ea155a9ab4b14ab88fe2a0934f14420139867babf5953c4",
+   "blockHeight":105,
+   "callbackTxId":"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6",
+   "callbackReason":"merkleProof"
+}
+```
+
 
 ### 3. Query transaction status
 
