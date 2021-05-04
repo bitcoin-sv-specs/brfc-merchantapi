@@ -195,7 +195,8 @@ Payload:
     "currentHighestBlockHeight": 151,
     "txSecondMempoolExpiry": 0
 }
-```
+
+
 | field                       | function                                                |
 | --------------------------- | ------------------------------------------------------- |
 | `apiVersion`                | version of merchant api spec                            |
@@ -218,7 +219,6 @@ There is an option for the miner to provide a callback reason to enable client a
 
 Request:
 
-```json
 {
 "rawTx": "0100000001b753fbcb4e99659468067c2512b64d80c593bf46d4b60f750dd77c59391c4210000000006a473044022000cc88f3feadbacfd93e2a1a723e4fa4a20ef329ab5daac3be962d973bee3fb5022031642f58b5fce72e531f9dcae49e74be95cdb2f59a312865517fa536581d85584121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
 "callbackUrl":  "https://your.service.callback/endpoint/{callbackReason}",
@@ -247,8 +247,7 @@ Sample TSC compliant merkle proof callback:
 
 ### 3. Query transaction status
 
-#### Purpose:
-
+#### Purpose
 This endpoint is used to check the current status of a previously submitted transaction. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the transaction status. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
 Request
