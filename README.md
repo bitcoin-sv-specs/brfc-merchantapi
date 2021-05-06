@@ -8,7 +8,7 @@ A reference implementation of the Merchant API server is available [here](https:
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 8eeed98377bd | mAPI         | nChain  |   1.3.0-beta-beta |
+| 8eeed98377bd | mAPI         | nChain  |   1.3.0-beta|
 
 ## Overview
 
