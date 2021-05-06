@@ -47,7 +47,7 @@ GET /mapi/feeQuote
 
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.3.0-beta-beta\",\"timestamp\":\"2020-11-12T13:17:47.7498672Z\",\"expiryTime\":\"2020-11-12T13:27:47.7498672Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e\",\"currentHighestBlockHeight\":234,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}]}",
+    "payload": "{\"apiVersion\":\"1.3.0-beta\",\"timestamp\":\"2020-11-12T13:17:47.7498672Z\",\"expiryTime\":\"2020-11-12T13:27:47.7498672Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e\",\"currentHighestBlockHeight\":234,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}]}",
     "signature": "30440220708e2e62a393f53c43d172bc1459b4daccf9cf23ff77cff923f09b2b49b94e0a022033792bee7bc3952f4b1bfbe9df6407086b5dbfc161df34fdee684dc97be72731",
     "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
     "encoding": "UTF-8",
@@ -68,7 +68,7 @@ GET /mapi/feeQuote
 
 ```json
 {
-    "apiVersion": "1.3.0-beta-beta",
+    "apiVersion": "1.3.0-beta",
     "timestamp": "2020-11-12T13:17:47.7498672Z",
     "expiryTime": "2020-11-12T13:27:47.7498672Z",
     "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
