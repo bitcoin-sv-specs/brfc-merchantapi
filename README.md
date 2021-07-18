@@ -129,12 +129,12 @@ body: when `Content-Type` is `application/json`:
 ```json
 {
     "rawtx":        "[transaction_hex_string]",
-    "callBackUrl":  "https://your.service.callback/endpoint",
-    "callBackToken" : <channel token>,
+    "callbackUrl":  "https://your.service.callback/endpoint",
+    "callbackToken" : <channel token>,
     "merkleProof" : true,
     "merkleFormat" : "TSC",
     "dsCheck" : true,
-    "callBackEncryption" : <parameter>
+    "callbackEncryption" : <parameter>
 }
 ```
 To submit transaction in binary format use `Content-Type: application/octet-stream` with the binary serialized transaction in the request body. You can specify `callbackUrl`, `callbackToken`, `merkleProof`,`merkleFormat`,`dsCheck` and `callbackEncryption` in the query string.
@@ -448,7 +448,7 @@ Request Body:
 {
     "rawtx": "01000000015d7d8ffefc2b95a68a95d8e3c50715f8affc0e56ef58a05c773789e6fa3eb537010000006a47304402206c1ba36989bdca944c4ac1e74c23afaaf93fb6ded3a3d6e01f2c28667373c26e0220676085f6fe30071022ea5c8e790e7d9cf52671d0bc3c4d374991be65b6e11bc34121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
     "callbackUrl":"https://your-server/api/v1/channel/533",
-    "callbackToken":"CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
+    "callbackToken":"Bearer CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
     "merkleProof":false,
     "merkleFormat":"",
     "dsCheck": true
