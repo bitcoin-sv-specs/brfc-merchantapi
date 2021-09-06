@@ -137,7 +137,7 @@ body: when `Content-Type` is `application/json`:
     "callBackEncryption" : <parameter>
 }
 ```
-To submit transaction in binary format use `Content-Type: application/octet-stream` with the binary serialized transaction in the request body. You can specify `callbackUrl`, `callbackToken`, `merkleProof`,`merkleFormat`,`dsCheck` and `callbackEncryption` in the query string.
+To submit a transaction in binary format use `Content-Type: application/octet-stream` with the binary serialized transaction in the request body. You can specify `callbackUrl`, `callbackToken`, `merkleProof`,`merkleFormat`,`dsCheck` and `callbackEncryption` in the query string.
 
 `merkleFormat` is optional - If merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
 
@@ -146,17 +146,17 @@ When Content-Type is application/octet-stream, it is possible to upload the rawt
 
 | field                       | function            |
 | ----------------------------|---------------------|
-| `callbackURL`   | HTTP(S) endpoint used to receive messages from miner                                                                 |
-| `callbackToken` | HTTP authorization header used when authenticating against callbackURL                                                                |
+| `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
+| `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
 | `merkleProof`   | used to request a merkle proof    |
-| `merkleFormat`   | (optional) returns TSC compliant merkle proof format if set to "TSC"   |
+| `merkleFormat`  | (optional) returns TSC compliant merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
 | `callbackEncryption`   |   optional parameter to encrypt callback data     |
 
 
-*Note:*  In mAPI 1.3.0, the supported encryption method is libsodium sealed_box which is an anonymous (you can not identify the sender) public key encryption with integrity check (see here for more details: https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes )
+*Note:*  In mAPI 1.3.0, the supported encryption method is libsodium sealed_box which is an anonymous (you can not identify the sender) public key encryption with integrity check (for more details see: https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes)
 
-The format of callbackEncryption parameter is:
+The format of the callbackEncryption parameter is:
 
     libsodium sealed_box <base64 encoded encryption key>
 
@@ -199,8 +199,8 @@ Payload:
 
 | field                       | function                                                |
 | --------------------------- | ------------------------------------------------------- |
-| `apiVersion`                | version of merchant api spec                            |
-| `timestamp`                 | timestamp of payload document                           |
+| `apiVersion`                | version of the merchant api spec                        |
+| `timestamp`                 | timestamp of the payload document                       |
 | `txid`                      | transaction ID                                          |
 | `returnResult`              | will contain either `success` or `failure`                  |
 | `resultDescription`         | will contain the error on `failure` or empty on `success`   |
@@ -211,11 +211,11 @@ Payload:
 | `conflictedWith`            | list of all double spend transactions                   |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or  double spend notification is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel setup and ready to receive messages. Check [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or double spend notification is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. Check [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
-There is an option for the miner to provide a callback reason to enable client applications to determine what type of callback is returned e.g. merkle proof or double spend
+There is an option for the miner to provide a callback reason to enable client applications to determine what type of callback is returned, for example, merkle proof or double spend
 
 #### Request:
 ```json
@@ -269,7 +269,7 @@ GET /mapi/tx/{hash:[0-9a-fA-F]+}
 | field       | function                                            |
 | ----------- | --------------------------------------------------- |
 | `payload`   | main data payload encoded in a specific format type |
-| `signature` | signature on payload string. This may be _null_.    |
+| `signature` | signature on the payload string. This may be _null_.    |
 | `publicKey` | public key to verify signature. This may be _null_. |
 | `encoding`  | encoding type                                       |
 | `mimetype`  | multipurpose Internet Mail Extensions type          |
@@ -414,13 +414,13 @@ Payload:
 
 | field                       | function                                                |
 | --------------------------- | ------------------------------------------------------- |
-| `apiVersion`                | version of merchant api spec                            |
-| `timestamp`                 | timestamp of payload document                           |
-| `minerId`                   | minerId public key of miner                             |
-| `currentHighestBlockHash`   | hash of current blockchain tip                          |
-| `currentHighestBlockHeight` | height of current blockchain tip                          |
-| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
-| `txs`                       | list of transaction responses                            |
+| `apiVersion`                | version of the merchant api spec                        |
+| `timestamp`                 | timestamp of the payload document                       |
+| `minerId`                   | a public key of the miner                               |
+| `currentHighestBlockHash`   | hash of the current blockchain tip                      |
+| `currentHighestBlockHeight` | height of the current blockchain tip                    |
+| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in the secondary mempool |
+| `txs`                       | list of transaction responses                           |
 | `txid`                      | transaction ID                                          |
 | `resultDescription`         | will contain the error on `failure` or empty on `success`   |
 | `returnResult`              | will contain either `success` or `failure`                  |
@@ -428,7 +428,7 @@ Payload:
 |                             |                                           |
 
 
-To submit transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
+To submit a transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
 
 
 ### Callback Notifications
@@ -473,10 +473,10 @@ Merkle proof callback can be requested by specifying:
  "merkleFormat": "TSC"
 }
 ```
-merkleFormat is optional - If merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
+merkleFormat is optional. If merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
 
-If callback was requested on transaction submit, merchant should receive a notification of doublespend and/or merkle proof via callback URL. mAPI process all requested notifications and sends them out in batches.
-Callbacks have three possible callbackReasons: "doubleSpend", "doubleSpendAttempt" and "merkleProof". DoubleSpendAttempt implies, that double spend was detected in mempool.
+If callback was requested on transaction submit, the merchant should receive a notification of doublespend and/or merkle proof via the callback URL. mAPI process all requested notifications and sends them out in batches.
+Callbacks have three possible callbackReasons: "doubleSpend", "doubleSpendAttempt" and "merkleProof". DoubleSpendAttempt implies that a double spend was detected in the mempool.
 
 Double spend callback example:
 ```json
