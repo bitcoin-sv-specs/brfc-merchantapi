@@ -530,6 +530,20 @@ Merkle proof callback example:
     "callbackReason": "merkleProof"
 }
 ```
+
+TSC Merkle proof callback example:
+```json
+{
+  "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
+  "apiVersion": "1.3.0",
+  "timestamp": "2021-04-30T08:06:13.4129624Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "blockHash": "2ad8af91739e9dc41ea155a9ab4b14ab88fe2a0934f14420139867babf5953c4",
+  "blockHeight": 105,
+  "callbackTxId": "e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6",
+  "callbackReason": "merkleProof"
+}
+```
 --oOo--
 
 
