@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.3.2.
+ReadMe version 1.3.0c.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -15,13 +15,13 @@ A reference implementation of the Merchant API server is available [here](https:
 ## Overview
 
 Merchant API (mAPI) is an additional service that miners can offer to merchants.
-It ernables merchants to get fee quotes for submitting a transactions, submit the transaction and query the transaction status.
+It enables merchants to get fee quotes for submitting a transactions, submit the transaction and query the transaction status.
 
 ### Data Flow Diagram
 
 ![data flow](out/mapi-bip270/data_flow.png)
 
-> Note: this protocol uses the [JSON envelopes BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) as well as the [Fee Spec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec).
+> Note: This protocol uses the [JSON envelopes BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) as well as the [Fee Spec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec).
 > Note: The example JSON below illustrates the syntax and typical data
 ---
 
@@ -65,13 +65,13 @@ GET /mapi/feeQuote
 | field       | function                                            |
 | ----------- | --------------------------------------------------- |
 | `payload`   | main data payload encoded in a compressed JSON format  |
-| `signature` | signature on payload string. This may be _null_.       |
-| `publicKey` | public key to verify signature. This may be _null_.    |
-| `encoding`  | encoding type for payload                              |
-| `mimetype`  | multipurpose Internet Mail Extensions type for payload |
+| `signature` | signature on the payload string or _null_       |
+| `publicKey` | public key to verify signature or _null_    |
+| `encoding`  | encoding type for the payload                              |
+| `mimetype`  | multipurpose Internet Mail Extensions type for the payload |
 |                                                                      |
 
-#### Payload:
+##### Expanded Payload:
 
 ```json
 {
@@ -110,13 +110,13 @@ GET /mapi/feeQuote
 
 | field                       | function                                                                                     |
 | --------------------------- | -------------------------------------------------------------------------------------------- |
-| `apiVersion`                | version of merchant api spec                                                                 |
-| `timestamp`                 | timestamp of payload document                                                                |
+| `apiVersion`                | version of the merchant API specification used                                                                 |
+| `timestamp`                 | timestamp of the payload document                                                                |
 | `expiryTime`                | expiry time of quote                                                                         |
-| `minerId`                   | minerID / public key of miner. This may be _null_.                                           |
-| `currentHighestBlockHash`   | hash of current blockchain tip                                                               |
-| `currentHighestBlockHeight` | height of current blockchain tip                                                               |
-| `fees`          | fees charged by miner ([feeSpec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec))                                                                          
+| `minerId`                   | minerID / public key of miner or _null_                                           |
+| `currentHighestBlockHash`   | hash of the current blockchain tip                                                               |
+| `currentHighestBlockHeight` | height of the current blockchain tip                                                               |
+| `fees`          | fees charged by the miner (see [feeSpec BRFC](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/feespec))                                                                          
 
 
 
@@ -159,6 +159,7 @@ For large transactions, binary is half the size of the hexadecimal equivalent al
 
 | field                       | function            |
 | ----------------------------|---------------------|
+| `rawtx`         | Hex encoded transaction   |
 | `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
 | `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
 | `merkleProof`   | used to request a merkle proof    |
@@ -186,15 +187,9 @@ The format of the callbackEncryption parameter is:
 }
 ```
 
-| field       | function                                            |
-| ----------- | --------------------------------------------------- |
-| `payload`   | main data payload encoded in a compressed JSON format |
-| `signature` | signature on payload string. This may be _null_.    |
-| `publicKey` | public key to verify signature. This may be _null_. |
-| `encoding`  | encoding type                                       |
-| `mimetype`  | multipurpose Internet Mail Extensions type          |
+The fields are specified above.
 
-Payload:
+##### Expanded Payload:
 
 ```json
 {
@@ -212,23 +207,18 @@ Payload:
 
 | field                       | function                                                |
 | --------------------------- | ------------------------------------------------------- |
-| `apiVersion`                | version of the merchant api spec                        |
-| `timestamp`                 | timestamp of the payload document                       |
 | `txid`                      | transaction ID                                          |
 | `returnResult`              | will contain either `success` or `failure`                  |
 | `resultDescription`         | will contain the error on `failure` or empty on `success`   |
-| `minerId`                   | minerId public key of miner                             |
-| `currentHighestBlockHash`   | hash of current blockchain tip                          |
-| `currentHighestBlockHeight` | hash of current blockchain tip                          |
-| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in secondary mempool |
-| `conflictedWith`            | list of all double spend transactions                   |
+| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in the secondary mempool |
+| `conflictedWith`            | list of double spend transactions                   |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or double spend notification is sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. Check [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
-There is an option for the miner to provide a callback reason to enable client applications to determine what type of callback is returned, for example, merkle proof or double spend
+There is an option for the miner to provide a callback reason using `{callbackReason}` to enable client applications to determine what type of callback is returned, for example, merkle proof or double spend.
 
 #### Request:
 ```json
@@ -244,7 +234,7 @@ There is an option for the miner to provide a callback reason to enable client a
 ```
 #### Response:
 
-Sample TSC compliant merkle proof callback:
+An example TSC compliant merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
 ```json
 {
     "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
@@ -280,15 +270,9 @@ GET /mapi/tx/{hash:[0-9a-fA-F]+}
 }
 ```
 
-| field       | function                                            |
-| ----------- | --------------------------------------------------- |
-| `payload`   | main data payload encoded in a compressed JSON format |
-| `signature` | signature on payload string. This may be _null_.    |
-| `publicKey` | public key to verify signature. This may be _null_. |
-| `encoding`  | encoding type                                       |
-| `mimetype`  | multipurpose Internet Mail Extensions type          |
+The fields are specified above.
 
-Payload:
+##### Expanded Payload:
 
 ```json
 {
@@ -302,17 +286,7 @@ Payload:
 }
 ```
 
-| field                   | function                                                |
-| ----------------------- | ------------------------------------------------------- |
-| `returnResult`          | will contain either success or failure                  |
-| `resultDescription`     | will contain the error on failure or empty on success   |
-| `blockHash`             | hash of tx block                                        |
-| `blockHeight`           | height of tx block                                      |
-| `minerId`               | minerId public key of miner                             |
-| `confirmations`         | number of block confirmations                           |
-| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in secondary mempool |
-
-OR
+#### Alternative Response
 
 ```json
 {
@@ -324,7 +298,9 @@ OR
 }
 ```
 
-Payload:
+The fields are specified above.
+
+##### Expanded Payload:
 
 ```json
 {
@@ -339,6 +315,12 @@ Payload:
     "txSecondMempoolExpiry": 0
 }
 ```
+
+| field                   | function                                                |
+| ----------------------- | ------------------------------------------------------- |
+| `blockHash`             | hash of tx block                                        |
+| `blockHeight`           | height of tx block                                      |
+| `confirmations`         | number of block confirmations                           |
 
 ### 4. Submit multiple transactions
 
@@ -379,7 +361,9 @@ You can also omit *callbackUrl*, *callbackToken*, *merkleProof*,*merkleFormat* a
 }
 ```
 
-Example Payload:
+The fields are specified above.
+
+##### Expanded Payload:
 
 ```json
 {
@@ -414,18 +398,8 @@ Example Payload:
 
 | field                       | function                                                |
 | --------------------------- | ------------------------------------------------------- |
-| `apiVersion`                | version of the merchant api spec                        |
-| `timestamp`                 | timestamp of the payload document                       |
-| `minerId`                   | a public key of the miner                               |
-| `currentHighestBlockHash`   | hash of the current blockchain tip                      |
-| `currentHighestBlockHeight` | height of the current blockchain tip                    |
-| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in the secondary mempool |
 | `txs`                       | list of transaction responses                           |
-| `txid`                      | transaction ID                                          |
-| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
-| `returnResult`              | will contain either `success` or `failure`                  |
 | `failureCount`              | number of failed transaction submissions |
-|                             |                                           |
 
 
 To submit a transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
@@ -477,8 +451,8 @@ Merkle proof callback can be requested by specifying:
 ```
 merkleFormat is optional. If merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
 
-If callback was requested on transaction submit, the merchant should receive a notification of doublespend and/or merkle proof via the callback URL. mAPI process all requested notifications and sends them out in batches.
-Callbacks have three possible callbackReasons: "doubleSpend", "doubleSpendAttempt" and "merkleProof". DoubleSpendAttempt implies that a double spend was detected in the mempool.
+If callback was requested on Submit transaction, the merchant will receive a notification of doublespend and/or merkle proof via the callback URL. mAPI processes all requested notifications and sends them out in batches.
+Callbacks have these possible callbackReasons: "doubleSpend", "doubleSpendAttempt" and "merkleProof". DoubleSpendAttempt implies that a double spend was detected in the mempool.
 
 Double spend callback example:
 ```json
@@ -496,12 +470,11 @@ Double spend callback example:
 
 | field                   | function                                                |
 | ----------------------- | ------------------------------------------------------- |
-| `callbackPayload`       | payload with information about new transaction          |
-| `minerId`               | minerId public key of miner                             |
+| `callbackPayload`       | payload with information about the new transaction          |
 | `blockHash`             | hash of tx block                                        |
 | `blockHeight`           | height of tx block                                      |
 | `callbackTxId`          | tx with requested dsCheck                               |
-| `callbackReason`        | the reason for callback                                 |
+| `callbackReason`        | the reason for the callback                                 |
 
 Double spend attempt callback example:
 ```json
