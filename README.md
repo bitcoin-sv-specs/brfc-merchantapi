@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.3.0c.
+ReadMe version 1.3.0d.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -404,6 +404,9 @@ The fields are specified above.
 
 To submit a transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
 
+#### Double Spend Attempts
+
+It is possible that more than one transaction in the batch attempts to spend the same input from the batch. This is a double-spend attempt. mAPI does not attempt to detect this, instead the transactions are passed to the BSV Node which will detect the double spend attempt and reject one or more transactions, in a similar manner to the response shown above. This will also happen when the inputs are a double-spend attempt from earlier transactions i.e. not just in the same batch of transactions.
 
 ### Callback Notifications
 
@@ -517,6 +520,7 @@ TSC Merkle proof callback example:
   "callbackReason": "merkleProof"
 }
 ```
+
 --oOo--
 
 
