@@ -40,8 +40,8 @@ The **REST API** has these endpoints:
 
 #### Purpose:
 
-This endpoint is used to get the different policies quoted by a miner. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the policies used a specific BSV miner. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
-This is a superset of the fee quote service.
+This endpoint is used to get the different policies quoted by a miner. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the policies used by a specific BSV miner. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+This is a superset of the fee quote service, as it also includes information on DSNT IP addresses and miner policies.
 
 #### Request:
 
@@ -509,7 +509,7 @@ Merchants can request callbacks for *merkle proofs* and/or *double spend notific
 
 The tool that builds the transaction, can build a special double-spend notification output according to the [DSNT specification](https://github.com/bitcoin-sv-specs/protocol/blob/master/updates/double-spend-notifications.md).
 A DSNT server must be used to communicate with node. The mAPI reference implementation is a DSNT server, so the IP address of that can be used in the DSNT transaction output.
-That information is made available in response to a GET poliy quote command (above).
+That information is made available in response to a GET policy quote command (above).
 
 This will allow node to invoke the mAPI reference implmentation if a double spend is detected. That, in turn, will cause a callback to any callbackUrl supplied in submit transaction (above).
 
