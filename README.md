@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.0.
+ReadMe version 1.4.0a.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -11,6 +11,9 @@ A reference implementation of the Merchant API server is available [here](https:
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
 | 8eeed98377bd | mAPI         | nChain  |   1.4.0 |
+
+## Dependency
+mAPI v1.4.0 requires BSV Node v1.0.10 or later.
 
 ## Overview
 
@@ -30,10 +33,10 @@ It enables merchants to get policy and fee quotes for submitting transactions, s
 The **REST API** has these endpoints:
 
 1. [Get policy quote](#1-get-policy-quote)
-2. [Get fee quote](#1-get-fee-quote)
-3. [Submit transaction](#2-submit-transaction)
-4. [Query transaction status](#3-query-transaction-status)
-5. [Submit multiple transactions](#4-submit-multiple-transactions)
+2. [Get fee quote](#2-get-fee-quote)
+3. [Submit transaction](#3-submit-transaction)
+4. [Query transaction status](#4-query-transaction-status)
+5. [Submit multiple transactions](#5-submit-multiple-transactions)
 
 
 ### 1. Get policy quote
@@ -129,6 +132,8 @@ GET /mapi/policyQuote
     }
 }
 ```
+> Note: BSV Node v1.0.11 does not support "dustlimitfactor" and "dustrelayfee" policies, so they should not have been configured and will not be contained within the response
+
 
 | field                       | function                                                                                     |
 | --------------------------- | -------------------------------------------------------------------------------------------- |
