@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.0a.
+ReadMe version 1.4.9-c.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -10,10 +10,10 @@ A reference implementation of the Merchant API server is available [here](https:
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 8eeed98377bd | mAPI         | nChain  |   1.4.0 |
+| 8eeed98377bd | mAPI         | nChain  |   1.4.0 | TODO
 
 ## Dependency
-mAPI v1.4.0 requires BSV Node v1.0.10 or later.
+mAPI v1.5.0 requires BSV Node v1.0.10 or later.
 
 ## Overview
 
@@ -351,18 +351,27 @@ This endpoint is used to check the current status of a previously submitted tran
 
 Request
 ```
-GET /mapi/tx/{hash:[0-9a-fA-F]+}
+GET /mapi/tx/{txid}?merkleProof=bool&merkleFormat=TSC
 ```
+
+#### Parameters
+
+| parameter | description |
+| ----------| ----------- |
+| `txid` | hex encoded transaction identity |
+| `merkleProof` | optional specifying whether any available Merkle proof should be provided – default is false |
+| `merkleFormat` | optional specifying the format of any Merkle proof returned – default is the recommended [TSC](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/) |
 
 #### Response:
 
+An example response with TSC compliant Merkle proof requested:
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T07:53:59.580061Z\",\"txid\":\"76bb952edbdd649e92f5f74c0341f5afa8679629a7e36bda30f6d2d530ffef6f\",\"returnResult\":\"failure\",\"resultDescription\":\"Mixed results\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"txSecondMempoolExpiry\":0}",
-    "signature": "3044022038e82aff0decea8c95da0764c46e93613af2d5577468a89d0901de04f45fc83002205e073b1f5a8c275204873a6f14d5fa2d2acf5958f157201661d71fcbd57bbfe4",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{\"apiVersion\":\"1.5.0\",\"timestamp\":\"2022-10-14T07:37:32.8272043Z\",\"txid\":\"1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db\",\"returnResult\":\"success\",\"blockHash\":\"4da321c1550c35e13b5ba6ea252d32bc3d31d2d51d6182a1afdbc6d8492497e1\",\"blockHeight\":324,\"confirmations\":1,\"minerId\":\"029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1\",\"txSecondMempoolExpiry\":0,\"merkleProof\":{\"index\":2,\"txOrId\":\"1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db\",\"targetType\":\"header\",\"target\":\"0000002069191183f973fdb08b9880f7797bfcee39b7e5be179bb5f28d48c665095a1a51e6439c79ba1446eeae0cf1d5419acca760adce07b3bfba912f37bf828d06c8bafe104963ffff7f2000000000\",\"nodes\":[\"6969cfc4ca0956afb5bc06d9ad7595dc3ebbcf533bbfbf3d0901d81ee94f3826\",\"de34519da2777febd98027347a439bf83c9011177cef85116bdb66f609f94214\"]}}",
+  "signature": "304402207b92df19b708ffb55581b1cc401ad6ca044d485059520d6832b68feb6cc7f6cd0220553e50bfdacd0d9dec030a33faef6d3f18850c9c098324dcc6ceed8af81d0841",
+  "publicKey": "029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -372,15 +381,28 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-13T07:53:59.580061Z",
-    "txid": "76bb952edbdd649e92f5f74c0341f5afa8679629a7e36bda30f6d2d530ffef6f",
-    "returnResult": "failure",
-    "resultDescription": "Mixed results",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "txSecondMempoolExpiry": 0
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-10-14T07:37:32.8272043Z",
+  "txid": "1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db",
+  "returnResult": "success",
+  "blockHash": "4da321c1550c35e13b5ba6ea252d32bc3d31d2d51d6182a1afdbc6d8492497e1",
+  "blockHeight": 324,
+  "confirmations": 1,
+  "minerId": "029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1",
+  "txSecondMempoolExpiry":0,
+  "merkleProof": {
+    "index": 2,
+    "txOrId": "1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db",
+    "targetType": "header",
+    "target": "0000002069191183f973fdb08b9880f77...0bf828d06c8bafe104963ffff7f2000000000",
+    "nodes": [
+      "6969cfc4ca0956afb5bc06d9ad7595dc3ebbcf533bbfbf3d0901d81ee94f3826",
+      "de34519da2777febd98027347a439bf83c9011177cef85116bdb66f609f94214"
+    ]
+  }
 }
 ```
+The Merkle proof is provided and is compliant with the [TSC Specification](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/).
 
 #### Alternative Response
 
