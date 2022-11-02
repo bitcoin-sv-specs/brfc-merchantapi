@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-e.
+ReadMe version 1.4.9-g.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -250,8 +250,8 @@ For large transactions, binary is half the size of the hexadecimal equivalent al
 | `rawtx`         | Hex encoded transaction   |
 | `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
 | `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
-| `merkleProof`   | used to request a merkle proof    |
-| `merkleFormat`  | (optional) returns TSC compliant merkle proof format if set to "TSC"   |
+| `merkleProof`   | used to request a Merkle proof    |
+| `merkleFormat`  | (optional) returns TSC compliant Merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
 | `callbackEncryption`   | (optional) parameter to encrypt callback data     |
 
@@ -281,32 +281,37 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-13T07:37:44.8783319Z",
+    "apiVersion": "1.5.0",
+    "timestamp": "2022-11-13T07:37:44.8783319Z",
     "txid": "fed22f5ab54202e2ec39cb745d427fcfff960254cde0cf283493ac545f5737f6",
     "returnResult": "success",
     "resultDescription": "",
     "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
     "currentHighestBlockHash": "39e3a2a0e7ba1b9e331cfd396cef1a2d3baffa51624af2f5512e530f35a8aa43",
     "currentHighestBlockHeight": 151,
-    "txSecondMempoolExpiry": 0
+    "txSecondMempoolExpiry" : 0,
+    "warnings": "",
+    "failureRetryable": true,
+    "conflictedWith"" : ""
 }
 ```
 
-| field                       | function                                                |
-| --------------------------- | ------------------------------------------------------- |
-| `txid`                      | transaction ID                                          |
-| `returnResult`              | will contain either `success` or `failure`                  |
-| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
-| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in the secondary mempool |
-| `conflictedWith`            | list of double spend transactions                   |
+| field                   | function       |
+| ----------------------- | -------------- |
+| `txid`                  | transaction ID |
+| `returnResult`          | will contain either `success` or `failure` |
+| `resultDescription`     | will contain the error on `failure` or empty on `success`|
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in the secondary mempool |
+| `warnings`              | warnings provided by the system |
+| `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
+| `conflictedWith`        | list of double spend transactions |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
-There is an option for the miner to provide a callback reason using `{callbackReason}` to enable client applications to determine what type of callback is returned, for example, merkle proof or double spend.
+There is an option for the miner to provide a callback reason using `{callbackReason}` to enable client applications to determine what type of callback is returned, for example, Merkle proof or double spend.
 
 #### Request:
 ```json
@@ -322,7 +327,7 @@ There is an option for the miner to provide a callback reason using `{callbackRe
 ```
 #### Response:
 
-An example TSC compliant merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
+An example TSC compliant Merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
 ```json
 {
     "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
@@ -621,7 +626,7 @@ This is either because the transaction output has not reached the blockchain, or
 
 ### Callback Notifications
 
-Merchants can request callbacks for *merkle proofs* and/or *double spend notifications* in Submit transaction.
+Merchants can request callbacks for *Merkle proofs* and/or *double spend notifications* in Submit transaction.
 
 The tool that builds the transaction, can build a special double-spend notification output according to the [DSNT specification](https://github.com/bitcoin-sv-specs/protocol/blob/master/updates/double-spend-notifications.md).
 A DSNT server must be used to communicate with node. The mAPI reference implementation is a DSNT server, so the IP address of that can be used in the DSNT transaction output.
