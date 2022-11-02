@@ -531,13 +531,13 @@ It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/m
 
 #### Request:
 ```
-POST /mapi/txouts?includeMempool=bool&returnField=confirmations
+POST /mapi/txouts?includeMempool=bool&returnField=confirmations&returnField=value
 ```
 
 | parameter | description |
 | ----------| ----------- |
 | `includeMempool` | optional “search mempool” flag, in addition to always searching the blockchain – default is true |
-| `returnField` | Optional return named field specifier. Any number of these parameters may be specified in the command line. Possible field names are: scriptPubKey, scriptPubKeyLen, value, isStandard and confirmations. The default is all fields |
+| `returnField` | Optional return named field specifier. Any number of these parameters may be specified in the command. Possible field names are: scriptPubKey, scriptPubKeyLen, value, isStandard and confirmations. The default is all fields |
 
 ##### JSON Body:
 
@@ -614,7 +614,7 @@ POST /mapi/txouts?includeMempool=false
 }
 ```
 In this example, the 3 transaction outputs align with the 3 requests. 
-The first “txouts” array entry shows that the txid collided with a different txid (a double-spend attempt). 
+The first “txouts” array entry shows that the txid collided with a different txid. 
 The second entry returns all the fields (the default) about the transaction output. 
 The third entry shows that the transaction output is “missing”. 
 This is either because the transaction output has not reached the blockchain, or because it has been spent.
