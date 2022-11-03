@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-c.
+ReadMe version 1.4.9-h.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -10,7 +10,7 @@ A reference implementation of the Merchant API server is available [here](https:
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 8eeed98377bd | mAPI         | nChain  |   1.4.0 | TODO
+| 5494bcaa549e | mAPI         | nChain  |   1.5.0 |
 
 ## Dependency
 mAPI v1.5.0 requires BSV Node v1.0.10 or later.
@@ -37,6 +37,7 @@ The **REST API** has these endpoints:
 3. [Submit transaction](#3-submit-transaction)
 4. [Query transaction status](#4-query-transaction-status)
 5. [Submit multiple transactions](#5-submit-multiple-transactions)
+6. [Query transaction outputs](#6-query-transaction-outputs)
 
 
 ### 1. Get policy quote
@@ -48,12 +49,9 @@ This is a superset of the fee quote service, as it also includes information on 
 
 #### Request:
 
-~~~
-
+```
 GET /mapi/policyQuote
-
-~~~
-
+```
 
 #### Response:
 
@@ -134,7 +132,6 @@ GET /mapi/policyQuote
 ```
 > Note: BSV Node v1.0.11 does not support "dustlimitfactor" and "dustrelayfee" policies, so they should not have been configured and will not be contained within the response
 
-
 | field                       | function                                                                                     |
 | --------------------------- | -------------------------------------------------------------------------------------------- |
 | `apiVersion`                | version of the merchant API specification used                                                                 |
@@ -156,12 +153,9 @@ This is a subset of the policy quote service.
 
 #### Request:
 
-~~~
-
+```
 GET /mapi/feeQuote
-
-~~~
-
+```
 
 #### Response:
 
@@ -228,7 +222,7 @@ This endpoint is used to send a raw transaction to a miner for inclusion in the 
 POST /mapi/tx
 ```
 
-##### JSON Body
+##### JSON Body:
 
 Set `Content-Type` to `application/json`:
 
@@ -251,15 +245,13 @@ Submit the transaction with the binary serialized transaction in the request bod
 
 For large transactions, binary is half the size of the hexadecimal equivalent although this gain is largely minimized through the use of gzip encoding of the hex data.
 
-##### Fields
-
 | field                       | function            |
 | ----------------------------|---------------------|
 | `rawtx`         | Hex encoded transaction   |
 | `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
 | `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
-| `merkleProof`   | used to request a merkle proof    |
-| `merkleFormat`  | (optional) returns TSC compliant merkle proof format if set to "TSC"   |
+| `merkleProof`   | used to request a Merkle proof    |
+| `merkleFormat`  | (optional) returns TSC compliant Merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
 | `callbackEncryption`   | (optional) parameter to encrypt callback data     |
 
@@ -289,32 +281,37 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-13T07:37:44.8783319Z",
+    "apiVersion": "1.5.0",
+    "timestamp": "2022-11-13T07:37:44.8783319Z",
     "txid": "fed22f5ab54202e2ec39cb745d427fcfff960254cde0cf283493ac545f5737f6",
     "returnResult": "success",
     "resultDescription": "",
     "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
     "currentHighestBlockHash": "39e3a2a0e7ba1b9e331cfd396cef1a2d3baffa51624af2f5512e530f35a8aa43",
     "currentHighestBlockHeight": 151,
-    "txSecondMempoolExpiry": 0
+    "txSecondMempoolExpiry" : 0,
+    "warnings": "",
+    "failureRetryable": true,
+    "conflictedWith"" : ""
 }
 ```
 
-| field                       | function                                                |
-| --------------------------- | ------------------------------------------------------- |
-| `txid`                      | transaction ID                                          |
-| `returnResult`              | will contain either `success` or `failure`                  |
-| `resultDescription`         | will contain the error on `failure` or empty on `success`   |
-| `txSecondMempoolExpiry`     | duration (minutes) Tx will be kept in the secondary mempool |
-| `conflictedWith`            | list of double spend transactions                   |
+| field                   | function       |
+| ----------------------- | -------------- |
+| `txid`                  | transaction ID |
+| `returnResult`          | will contain either `success` or `failure` |
+| `resultDescription`     | will contain the error on `failure` or empty on `success`|
+| `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in the secondary mempool |
+| `warnings`              | warnings provided by the system |
+| `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
+| `conflictedWith`        | list of double spend transactions |
 
 
-If a double spend notification or merkle proof is requested in Submit transaction, the merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
-There is an option for the miner to provide a callback reason using `{callbackReason}` to enable client applications to determine what type of callback is returned, for example, merkle proof or double spend.
+There is an option for the miner to provide a callback reason using `{callbackReason}` to enable client applications to determine what type of callback is returned, for example, Merkle proof or double spend.
 
 #### Request:
 ```json
@@ -330,7 +327,7 @@ There is an option for the miner to provide a callback reason using `{callbackRe
 ```
 #### Response:
 
-An example TSC compliant merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
+An example TSC compliant Merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
 ```json
 {
     "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
@@ -346,19 +343,17 @@ An example TSC compliant merkle proof callback, which will be sent to `https://y
 
 ### 4. Query transaction status
 
-#### Purpose
+#### Purpose:
 This endpoint is used to check the current status of a previously submitted transaction. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the transaction status. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
-Request
+#### Request:
 ```
 GET /mapi/tx/{txid}?merkleProof=bool&merkleFormat=TSC
 ```
 
-#### Parameters
-
 | parameter | description |
 | ----------| ----------- |
-| `txid` | hex encoded transaction identity |
+| `txid` | hex encoded transaction ID |
 | `merkleProof` | optional specifying whether any available Merkle proof should be provided – default is false |
 | `merkleFormat` | optional specifying the format of any Merkle proof returned – default is the recommended [TSC](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/) |
 
@@ -404,7 +399,7 @@ The fields are specified above.
 ```
 The Merkle proof is provided and is compliant with the [TSC Specification](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/).
 
-#### Alternative Response
+#### Alternative Response:
 
 ```json
 {
@@ -446,13 +441,15 @@ The fields are specified above.
 
 This endpoint is used to send multiple raw transactions to a miner for inclusion in the next block that the miner creates. It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the responses to the transaction submissions. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
 
-Request
+#### Request:
 
 ```
 POST /mapi/txs
 ```
 
-body: where `Content-Type` is `application/json`:
+##### JSON Body:
+
+Where `Content-Type` is `application/json`.
 
 ```json
 [
@@ -514,10 +511,10 @@ The fields are specified above.
 }
 ```
 
-| field                       | function                                                |
-| --------------------------- | ------------------------------------------------------- |
-| `txs`                       | list of transaction responses                           |
-| `failureCount`              | number of failed transaction submissions |
+| field          | function                                 |
+| -------------- | ---------------------------------------- |
+| `txs`          | list of transaction responses            |
+| `failureCount` | number of failed transaction submissions |
 
 
 To submit a transaction in binary format use `Content-Type: application/octet-stream` Content-Type: application/octet-stream with the binary serialized transactions in the request body. Use query string to specify the remaining parameters.
@@ -526,9 +523,110 @@ To submit a transaction in binary format use `Content-Type: application/octet-st
 
 It is possible that more than one transaction in the batch attempts to spend the same input from the batch. This is a double-spend attempt. mAPI does not attempt to detect this, instead the transactions are passed to the BSV Node which will detect the double spend attempt and reject one or more transactions, in a similar manner to the response shown above. This will also happen when the inputs are a double-spend attempt from earlier transactions i.e. not just in the same batch of transactions.
 
+### 5. Query transaction outputs
+
+#### Purpose:
+This endpoint is used to check the status of transaction outputs. This could be because an interested party wants to know their value, or some other information. 
+
+The user may elect to search just the blockchain, or the blockchain and the mempool, for the transaction. The user may also elect to only return some information fields, or all information fields.
+
+Multiple outputs may be queried in each request.
+
+It returns a [JSONEnvelope](https://github.com/bitcoin-sv-specs/brfc-misc/tree/master/jsonenvelope) with a payload that contains the transaction status. The purpose of the envelope is to ensure strict consistency in the message content for the purpose of signing responses.
+
+#### Request:
+```
+POST /mapi/txouts?includeMempool=bool&returnField=confirmations&returnField=value
+```
+
+| parameter | description |
+| ----------| ----------- |
+| `includeMempool` | optional “search mempool” flag, in addition to always searching the blockchain – default is true |
+| `returnField` | Optional return named field specifier. Any number of these parameters may be specified in the command. Possible field names are: scriptPubKey, scriptPubKeyLen, value, isStandard and confirmations. The default is all fields |
+
+##### JSON Body:
+
+```json
+{
+  [
+    { "txid": "<transaction-id>", "n": 0 },
+    Et cetera
+  ]
+}
+```
+
+| field  | function                                 |
+| ------ | ---------------------------------------- |
+| `txid` | transaction ID of the transaction in question  |
+| `n`    | index of the output in the transaction |
+
+#### Example Request:
+
+```
+POST /mapi/txouts?includeMempool=false
+```
+
+```json
+{
+  [
+    { "txid": "0bc1733f05aae146c3641fd...57f60f19a430ffe867020619d54800", "n": 0 },
+    { "txid": "d013adf525ed5feaffc6e9d...40566470181f099f1560343cdcfd00", "n": 0 },
+    { "txid": "d013adf525ed5feaffc6e9d...40566470181f099f1560343cdcfd00", "n": 1 }
+  ]
+}
+```
+
+#### Example Response:
+
+```json
+{
+    "payload": "{\"apiVersion\":\"1.5.0\",\"timestamp\":\"2022-10-17T05:43:12.9408765Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"returnResult\":\"success\",\"txouts\":[{\"error\":\"spent\",\"collidedWith\":{\"txid\":\"c34ef6de079a1e3c738b0681fca06257f16369766ae3c768bb179c0a85550b32\",\"size\":259,\"hex\":\"01000000010048d519060267e8ff30a4190ff635e754cc5cdf0f1964c346e1aa053f73c10b000000006a47304402201bcc6e4ca8aa2e1c7eaec7f27451b1a19cdfe5f2dd91e4f11080d6345d1a921d02206f41d8068e34287f8e4cb79a5e10f986f8507818f602f28a7d946965e3361b57412103b1fb82639861ef2a329aa3d879bc42c813df793935ad2f0196c2245240393b25ffffffff0355a8ab31000000001976a914798889cb2e7002facbb3c8367c02321cbcc3b13388ac55a8ab31000000001976a914798889cb2e7002facbb3c8367c02321cbcc3b13388ac68a7ab31000000001976a914d4bbba35bec09f4ea9a61573233a1608705a509d88ac00000000\"}},{\"scriptPubKey\":\"76a914d4bbba35bec09f4ea9a61573233a1608705a509d88ac\",\"scriptPubKeyLen\":25,\"value\":25.00000000,\"isStandard\":true,\"confirmations\":201},{\"error\":\"missing\"}]}",
+    "signature": "304402207a6469871bc290c3e98a05febf7863b261c274904b8f8ea8eae1f9b18ce8253602203f5bdc8c9a6d0126f0ee8cb5c057cad9b64ea1e7df9515a98a50012f48c1c9b3",
+    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+    "encoding": "UTF-8",
+    "mimetype": "application/json"
+}
+```
+
+##### Expanded Payload:
+
+```json
+{
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-10-17T05:43:12.9408765Z",
+  "minerId": "030d1fe5c1b560efe196ba324...0daa9504c4c4cec6184fc702d9f274e",
+  "returnResult": "success",
+  "txouts": [
+    {
+      "error": "spent",
+      "collidedWith": { 
+        "txid": "c34ef6de079a1ev54tg...257f16369766ae3c768bb179c0a85550b32",
+        "size": 259,
+        "hex": "01000000010048d9060267e8ff30a4635e754c...3233a1608705a509d88ac00000000"
+      }
+    },
+    {
+      "scriptPubKey": "76a914d4bbba35bec09f9...83233a1608705a509d88ac",
+      "scriptPubKeyLen": 25,
+      "value": 25.00000000,
+      "isStandard": true,
+      "confirmations": 201
+    },
+    {
+      "error": "missing"
+    }
+  ]
+}
+```
+In this example, the 3 transaction outputs align with the 3 requests. 
+The first “txouts” array entry shows that the txid collided with a different txid. 
+The second entry returns all the fields (the default) about the transaction output. 
+The third entry shows that the transaction output is “missing”. 
+This is either because the transaction output has not reached the blockchain, or because it has been spent.
+
 ### Callback Notifications
 
-Merchants can request callbacks for *merkle proofs* and/or *double spend notifications* in Submit transaction.
+Merchants can request callbacks for *Merkle proofs* and/or *double spend notifications* in Submit transaction.
 
 The tool that builds the transaction, can build a special double-spend notification output according to the [DSNT specification](https://github.com/bitcoin-sv-specs/protocol/blob/master/updates/double-spend-notifications.md).
 A DSNT server must be used to communicate with node. The mAPI reference implementation is a DSNT server, so the IP address of that can be used in the DSNT transaction output.
