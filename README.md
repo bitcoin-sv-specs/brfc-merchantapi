@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-h.
+ReadMe version 1.4.9-j.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -54,6 +54,13 @@ GET /mapi/policyQuote
 ```
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | policy quote unavailable |
 
 ```json
 {
@@ -158,6 +165,13 @@ GET /mapi/feeQuote
 ```
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | fee quote unavailable |
 
 ```json
 {
@@ -265,6 +279,18 @@ The format of the callbackEncryption parameter is:
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 4xx  | Client error | recoverable - correct the error (such as missing input) and resubmit the transaction |
+| 5xx  | Server error | possibly recoverable – retry later |
+
+There is a small possibility that no response will be forthcoming due to exceptional circumstances such as the Node being reset.
+
+For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
+
 ```json
 {
     "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T07:37:44.8783319Z\",\"txid\":\"fed22f5ab54202e2ec39cb745d427fcfff960254cde0cf283493ac545f5737f6\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"39e3a2a0e7ba1b9e331cfd396cef1a2d3baffa51624af2f5512e530f35a8aa43\",\"currentHighestBlockHeight\":151,\"txSecondMempoolExpiry\":0}",
@@ -358,6 +384,13 @@ GET /mapi/tx/{txid}?merkleProof=bool&merkleFormat=TSC
 | `merkleFormat` | optional specifying the format of any Merkle proof returned – default is the recommended [TSC](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/) |
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid transaction ID |
 
 An example response with TSC compliant Merkle proof requested:
 ```json
@@ -465,6 +498,13 @@ Where `Content-Type` is `application/json`.
 You can also omit *callbackUrl*, *callbackToken*, *merkleProof*,*merkleFormat* and *dsCheck* from the request body and provide the default values in the query string.
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid request |
 
 ```json
 {
