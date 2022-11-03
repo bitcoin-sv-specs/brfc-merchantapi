@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-g.
+ReadMe version 1.4.9-h.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -10,7 +10,7 @@ A reference implementation of the Merchant API server is available [here](https:
 
 |     BRFC     |    title     | authors | version |
 | :----------: | :----------: | :-----: | :-----: |
-| 8eeed98377bd TODO | mAPI         | nChain  |   1.5.0 |
+| 5494bcaa549e | mAPI         | nChain  |   1.5.0 |
 
 ## Dependency
 mAPI v1.5.0 requires BSV Node v1.0.10 or later.
