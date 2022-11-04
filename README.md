@@ -1,7 +1,7 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-j.
-k
+ReadMe version 1.4.9.
+m
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -248,7 +248,7 @@ Set `Content-Type` to `application/json`:
     "merkleProof": true,
     "merkleFormat": "TSC",
     "dsCheck": true,
-    "callBackEncryption": "<parameter>"
+    "callbackEncryption": "<parameter>"
 }
 ```
 ##### Binary Data
@@ -284,7 +284,9 @@ HTTP response codes include:
 | code | meaning | description |
 | ---- | ------- | ----------- |
 | 200  | Ok      | has the following JSON body |
-| 4xx  | Client error | recoverable - correct the error (such as missing input) and resubmit the transaction |
+| 4xx  | Client error | recoverable - correct the error (such as unauthorized) and resubmit the transaction |
+| 500  | Server error | node is reset or safe mode is triggered |
+| 503  | Server error | node is unreachable |
 | 5xx  | Server error | possibly recoverable – retry later |
 
 There is a small possibility that no response will be forthcoming due to exceptional circumstances such as the Node being reset.
@@ -332,6 +334,7 @@ The fields are specified above.
 | `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
 | `conflictedWith`        | list of double spend transactions |
 
+If returnResult is failure and failureRetryable is true, the transction probably has missing inputs. Change the inputs and submit the new transaction.
 
 If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackUrl. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
