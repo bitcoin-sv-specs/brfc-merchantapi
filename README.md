@@ -1,6 +1,7 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-h.
+ReadMe version 1.4.9.
+m
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -39,7 +40,6 @@ The **REST API** has these endpoints:
 5. [Submit multiple transactions](#5-submit-multiple-transactions)
 6. [Query transaction outputs](#6-query-transaction-outputs)
 
-
 ### 1. Get policy quote
 
 #### Purpose:
@@ -54,6 +54,13 @@ GET /mapi/policyQuote
 ```
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | policy quote unavailable |
 
 ```json
 {
@@ -159,6 +166,13 @@ GET /mapi/feeQuote
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | fee quote unavailable |
+
 ```json
 {
     "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-12T13:17:47.7498672Z\",\"expiryTime\":\"2021-11-12T13:27:47.7498672Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e\",\"currentHighestBlockHeight\":234,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}]}",
@@ -229,12 +243,12 @@ Set `Content-Type` to `application/json`:
 ```json
 {
     "rawtx": "[transaction_hex_string]",
-    "callBackUrl": "https://your.service.callback/endpoint",
-    "callBackToken": "<channel token>",
+    "callbackUrl": "https://your.service.callback/endpoint",
+    "callbackToken": "<channel token>",
     "merkleProof": true,
     "merkleFormat": "TSC",
     "dsCheck": true,
-    "callBackEncryption": "<parameter>"
+    "callbackEncryption": "<parameter>"
 }
 ```
 ##### Binary Data
@@ -248,8 +262,8 @@ For large transactions, binary is half the size of the hexadecimal equivalent al
 | field                       | function            |
 | ----------------------------|---------------------|
 | `rawtx`         | Hex encoded transaction   |
-| `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
-| `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
+| `callbackUrl`   | HTTP(S) endpoint used to receive messages from the miner   |
+| `callbackToken` | HTTP authorization header used when authenticating against callbackUrl |
 | `merkleProof`   | used to request a Merkle proof    |
 | `merkleFormat`  | (optional) returns TSC compliant Merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
@@ -264,6 +278,20 @@ The format of the callbackEncryption parameter is:
 
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 4xx  | Client error | recoverable - correct the error (such as unauthorized) and resubmit the transaction |
+| 500  | Server error | node is reset or safe mode is triggered |
+| 503  | Server error | node is unreachable |
+| 5xx  | Server error | possibly recoverable – retry later |
+
+There is a small possibility that no response will be forthcoming due to exceptional circumstances such as the Node being reset.
+
+For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
 
 ```json
 {
@@ -306,8 +334,9 @@ The fields are specified above.
 | `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
 | `conflictedWith`        | list of double spend transactions |
 
+If returnResult is failure and failureRetryable is true, the transction probably has missing inputs. Change the inputs and submit the new transaction.
 
-If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackUrl. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
@@ -358,6 +387,13 @@ GET /mapi/tx/{txid}?merkleProof=bool&merkleFormat=TSC
 | `merkleFormat` | optional specifying the format of any Merkle proof returned – default is the recommended [TSC](https://tsc.bitcoinassociation.net/standards/merkle-proof-standardised-format/) |
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid transaction ID |
 
 An example response with TSC compliant Merkle proof requested:
 ```json
@@ -465,6 +501,13 @@ Where `Content-Type` is `application/json`.
 You can also omit *callbackUrl*, *callbackToken*, *merkleProof*,*merkleFormat* and *dsCheck* from the request body and provide the default values in the query string.
 
 #### Response:
+
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid request |
 
 ```json
 {
