@@ -1,6 +1,7 @@
 ## RFC Notice
 
 ReadMe version 1.4.9-j.
+k
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -38,7 +39,6 @@ The **REST API** has these endpoints:
 4. [Query transaction status](#4-query-transaction-status)
 5. [Submit multiple transactions](#5-submit-multiple-transactions)
 6. [Query transaction outputs](#6-query-transaction-outputs)
-
 
 ### 1. Get policy quote
 
@@ -243,8 +243,8 @@ Set `Content-Type` to `application/json`:
 ```json
 {
     "rawtx": "[transaction_hex_string]",
-    "callBackUrl": "https://your.service.callback/endpoint",
-    "callBackToken": "<channel token>",
+    "callbackUrl": "https://your.service.callback/endpoint",
+    "callbackToken": "<channel token>",
     "merkleProof": true,
     "merkleFormat": "TSC",
     "dsCheck": true,
@@ -262,8 +262,8 @@ For large transactions, binary is half the size of the hexadecimal equivalent al
 | field                       | function            |
 | ----------------------------|---------------------|
 | `rawtx`         | Hex encoded transaction   |
-| `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
-| `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
+| `callbackUrl`   | HTTP(S) endpoint used to receive messages from the miner   |
+| `callbackToken` | HTTP authorization header used when authenticating against callbackUrl |
 | `merkleProof`   | used to request a Merkle proof    |
 | `merkleFormat`  | (optional) returns TSC compliant Merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
@@ -333,7 +333,7 @@ The fields are specified above.
 | `conflictedWith`        | list of double spend transactions |
 
 
-If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackUrl. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
