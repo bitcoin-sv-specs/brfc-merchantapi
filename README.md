@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.5.0m.
+ReadMe version 1.5.0.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -301,7 +301,7 @@ HTTP response codes include:
 | 503  | Server error | node is unreachable |
 | 5xx  | Server error | possibly recoverable – retry later |
 
-There is a small possibility that no response will be forthcoming due to exceptional circumstances such as the Node being reset.
+There is a small possibility that no response will be forthcoming due to exceptional circumstances such as no response being received from Node.
 
 For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
 
