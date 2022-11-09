@@ -301,7 +301,7 @@ HTTP response codes include:
 | 503  | Server error | node is unreachable |
 | 5xx  | Server error | possibly recoverable – retry later |
 
-There is a small possibility that no response will be forthcoming due to exceptional circumstances such as no response being received from Node.
+There is a small possibility that under exceptional circumstances no response will be forthcoming.
 
 For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
 
