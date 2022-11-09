@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.5.0m.
+ReadMe version 1.5.0.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -301,15 +301,15 @@ HTTP response codes include:
 | 503  | Server error | node is unreachable |
 | 5xx  | Server error | possibly recoverable – retry later |
 
-There is a small possibility that no response will be forthcoming due to exceptional circumstances such as the Node being reset.
+There is a small possibility that no response will be forthcoming due to exceptional circumstances such as no response being received from Node.
 
 For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
 
 ```json
 {
   "payload": "{see below}",
-  "signature": "304402201ced51b2b7043b8c4dbda6d161f4946638dc4544...7386acfbfa69c25cd4ad9c42",
-  "publicKey": "030d1fe5c1b560efe196ba40540ce9...a9504c4c4cec6184fc702d9f274e",
+  "signature": "304402201ced51b2b7043b8c4dbda6d161f4946638dc4544ab6e7b50d1aae5286d246102022046d2ae28ed6b3ac1e76e535b284053ef3676fd847386acfbfa69c25cd4ad9c42",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
   "encoding": "UTF-8",
   "mimetype": "application/json"
 }
@@ -345,7 +345,7 @@ The fields are specified above.
 | `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
 | `conflictedWith`        | list of double spend transactions |
 
-If returnResult is failure and failureRetryable is true, the transction probably has missing inputs. Change the inputs and submit the new transaction.
+If returnResult is failure and failureRetryable is true, node probably has a temporary issue with the transaction. Retry or change the inputs and submit the new transaction.
 
 If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackUrl. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
@@ -356,7 +356,7 @@ There is an option for the miner to provide a callback reason using `{callbackRe
 #### Request:
 ```json
 { 
-  "rawtx": "0100000001146124b21b5f47c0f73f2e...a52832d2bbec2838f658f226788ac00000000", 
+  "rawtx": "0100000001146124b21b5f47c0f73f2e6f3330ec16767fbe1b2a7d7e59910dafa373f20cc4010000006a473044022004518512354059aa97a59e371b03b5279a4d893d6db674e7c9228ccdd0e98bd8022032fb064e2324100fb0a7bfa23a66f62ce23b751b1babc58f1f827e2c26e6f10c4121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000", 
   "merkleProof": true, 
   "merkleFormat": "TSC", 
   "dsCheck": true, 
@@ -370,31 +370,16 @@ An example TSC compliant Merkle proof callback, which will be sent to `https://y
 ```json
 {
   "callbackPayload": {
-    "flags": 2,
     "index": 1,
     "txOrId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
-    "target": {
-      "hash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
-      "confirmations": 1,
-      "height": 153,
-      "version": 536870912,
-      "versionHex": "20000000",
-      "merkleroot": "37d583955245120b465ee56f6b5be225ab8fb74dc330f20d588a73dc768a7724",
-      "num_tx": 2,
-      "time": 1667804033,
-      "mediantime": 1667804032,
-      "nonce": 2,
-      "bits": "207fffff",
-      "difficulty": 4.656542373906925E-10,
-      "chainwork": "0000000000000000000000000000000000000000000000000000000000000134",
-      "previousblockhash": "4ab1fc1d0aa240a58b33783f9cc7127ea0cce808debdc7787154b359e410b9e0"
-    },
+    "targetType": "header",
+    "target": "00000020e0b910e459b3547178c7bdde08e8cca07e12c79c3f78338ba540a20a1dfcb14a24778a76dc738a580df230c34db78fab25e25b6b6fe55e460b1245529583d53781ab6863ffff7f2002000000",
     "nodes": [
       "1a8e965ae9197e2a62d3c0a067a84de6108be89cce131bab0bcccaa1afb26542"
     ]
   },
   "apiVersion": "1.5.0",
-  "timestamp": "2022-11-07T06:53:31.9136093Z",
+  "timestamp": "2022-11-07T06:53:31.9199309Z",
   "blockHash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
   "blockHeight": 153,
   "callbackTxId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
@@ -734,7 +719,7 @@ Request Body:
 
 ```json
 {
-    "rawtx": "01000000015d7d8ffefc2b95a68a95d8e3c50715f8affc0e56ef58a05c773789e6fa3eb537010000006a47304402206c1ba36989bdca944c4ac1e74c23afaaf93fb6ded3a3d6e01f2c28667373c26e0220676085f6fe30071022ea5c8e790e7d9cf52671d0bc3c4d374991be65b6e11bc34121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
+    "rawtx": "0100000001106d69baf775bf023e98c713b78d8df44a07ab06c2e38598e52b223cef4d71f4010000006a47304402200254591bed254f9022eb8b119bebc2e79017d413fa1d1a05f4b6b7d101363a3c022040390ae692b83a852d61c062d93ee584354f61cd0ea8b930a8108b6d4e4217204121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0298929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac000000000000000010006a0464736e740801017f000001010000000000",
     "callbackUrl": "https://your-server/api/v1/channel/533",
     "callbackToken": "CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
     "merkleProof": false,
@@ -746,19 +731,31 @@ Request Body:
 #### Response:
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T08:04:25.9291559Z\",\"txid\":\"0d0ad5677eb0862f94b3eda7f13633f91cf7c4c8c14e1451ffd333d52ff8e207\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"100677f99bdd7d4f0b8ea3f35d575d0f69a80f89b5b5f14e11005f57e5e63ef5\",\"currentHighestBlockHeight\":151,\"txSecondMempoolExpiry\":0,\"conflictedWith\":[{\"txid\":\"9f817649adde97338bcda695ee13ae1c71960eac60e49671fed0bdcf45581d94\",\"size\":191,\"hex\":\"01000000015d7d8ffefc2b95a68a95d8e3c50715f8affc0e56ef58a05c773789e6fa3eb537010000006a47304402206a9372778ff1ea314cfb2ec4e6bc93a57fe67c5ca915d004850f8079c876977c022066e3581cbec0eb2d525d4d83d01fff4f4e0b13a477f4f6a07d9168cc40bbabe54121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}]}",
-    "signature": "3044022048739a74a7f14b870d410f02c60dafcee2899348c7cd1184977e9ac5096ba63a022038ca0066645d1201ba0f385bd88da4c9bc7410582ae7bb3e248d79b7dbcfd205",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{
+    "apiVersion": "1.5.0",
+    "timestamp": "2022-11-07T07:05:37.9417712Z",
+    "txid": "8bd5ce05e88761060d86a8ad17dd523b1e0031b922c6890f2c09204286f694d3",
+    "returnResult": "success",
+    "resultDescription": "",
+    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+    "currentHighestBlockHash": "2132371c818dfd45f0ff34e74c30ca80ea9054d02f43d5cbc8177c548acd5e1a",
+    "currentHighestBlockHeight": 151,
+    "txSecondMempoolExpiry": 0,
+    "warnings":[],
+    "failureRetryable": false
+  }",
+  "signature": "3044022076a40fcbb4348e86e99c2703cc5dc4842ca1170b0cb3c3ad98d7d52abe32d46f022029556cf236d224ff513c2c926db2b0312b13885e88416bb46894da45b1e51350",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
 Merkle proof callback can be requested by specifying:
 ```json
 {
-    "merkleProof": true,
-    "merkleFormat": "TSC"
+  "merkleProof": true,
+  "merkleFormat": "TSC"
 }
 ```
 If the optional merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
