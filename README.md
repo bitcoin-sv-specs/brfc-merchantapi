@@ -341,7 +341,7 @@ The fields are specified above.
 | `returnResult`          | will contain either `success` or `failure` |
 | `resultDescription`     | will contain the error on `failure` or empty on `success`|
 | `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in the secondary mempool |
-| `warnings`              | warnings provided by the system |
+| `warnings`              | any DSNT protocol warnings provided by the system |
 | `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
 | `conflictedWith`        | list of double spend transactions |
 
