@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.4.9-h.
+ReadMe version 1.5.0.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -39,7 +39,6 @@ The **REST API** has these endpoints:
 5. [Submit multiple transactions](#5-submit-multiple-transactions)
 6. [Query transaction outputs](#6-query-transaction-outputs)
 
-
 ### 1. Get policy quote
 
 #### Purpose:
@@ -55,13 +54,20 @@ GET /mapi/policyQuote
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | policy quote unavailable |
+
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-12T13:17:47.7498672Z\",\"expiryTime\":\"2021-11-12T13:27:47.7498672Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e\",\"currentHighestBlockHeight\":234,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}],\"callbacks\":[{\"ipAddress\":\"123.456.789.123\"}],\"policies\":{\"skipscriptflags\":[\"MINIMALDATA\",\"DERSIG\",\"NULLDUMMY\",\"DISCOURAGE_UPGRADABLE_NOPS\",\"CLEANSTACK\"],\"maxtxsizepolicy\":99999,\"datacarriersize\":100000,\"maxscriptsizepolicy\":100000,\"maxscriptnumlengthpolicy\":100000,\"maxstackmemoryusagepolicy\":10000000,\"limitancestorcount\":1000,\"limitcpfpgroupmemberscount\":10,\"acceptnonstdoutputs\":true,\"datacarrier\":true,\"dustrelayfee\":150,\"maxstdtxvalidationduration\":99,\"maxnonstdtxvalidationduration\":100,\"dustlimitfactor\":10}}",
-    "signature": "30440220708e2e62a393f53c43d172bc1459b4daccf9cf23ff77cff923f09b2b49b94e0a022033792bee7bc3952f4b1bfbe9df6407086b5dbfc161df34fdee684dc97be72731",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{see below}",
+  "signature": "3044022020491e059ca6c095464e119ecc7d95554756c1e73afa6f47800e97102224f2f202205f41f45e34cc230a074813e3868225036c464af730bb7a4b8713f4d27e877ada",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -77,57 +83,65 @@ GET /mapi/policyQuote
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-12T13:17:47.7498672Z",
-    "expiryTime": "2021-11-12T13:27:47.7498672Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "currentHighestBlockHash": "45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e",
-    "currentHighestBlockHeight": 234,
-    "fees": [
-        {
-            "feeType": "standard",
-            "miningFee": {
-                "satoshis": 500,
-                "bytes": 1000
-            },
-            "relayFee": {
-                "satoshis": 250,
-                "bytes": 1000
-            }
-        },
-        {
-            "feeType": "data",
-            "miningFee": {
-                "satoshis": 500,
-                "bytes": 1000
-            },
-            "relayFee": {
-                "satoshis": 250,
-                "bytes": 1000
-            }
-        }
-    ],
-    "callbacks": [
-        {
-            "ipAddress": "123.456.789.123"
-        }
-    ],
-    "policies": {
-        "skipscriptflags": [ "MINIMALDATA", "DERSIG", "NULLDUMMY", "DISCOURAGE_UPGRADABLE_NOPS", "CLEANSTACK" ],
-        "maxtxsizepolicy": 99999,
-        "datacarriersize": 100000,
-        "maxscriptsizepolicy": 100000,
-        "maxscriptnumlengthpolicy": 100000,
-        "maxstackmemoryusagepolicy": 10000000,
-        "limitancestorcount": 1000,
-        "limitcpfpgroupmemberscount": 10,
-        "acceptnonstdoutputs": true,
-        "datacarrier": true,
-        "dustrelayfee": 150,
-        "maxstdtxvalidationduration": 99,
-        "maxnonstdtxvalidationduration": 100,
-        "dustlimitfactor": 10 
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-04T10:45:29.4034819Z",
+  "expiryTime": "2022-11-04T10:55:29.4034819Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "currentHighestBlockHash": "6114b49cadc9974fe4ef8e82565bae53c58a86d2b1599af845ff953bc8391c6e",
+  "currentHighestBlockHeight": 151,
+  "fees": [
+    {
+      "feeType": "standard",
+      "miningFee": {
+        "satoshis": 500,
+        "bytes": 1000
+      },
+      "relayFee": {
+        "satoshis": 250,
+        "bytes": 1000
+      }
+    },
+    {
+      "feeType": "data",
+      "miningFee": {
+        "satoshis": 500,
+        "bytes": 1000
+      },
+      "relayFee": {
+        "satoshis": 250,
+        "bytes": 1000
+      }
     }
+  ],
+  "callbacks": [
+    {
+      "ipAddress": "123.456.789.123"
+    }
+  ],
+  "policies": {
+    "skipscriptflags": [
+      "MINIMALDATA",
+      "DERSIG",
+      "NULLDUMMY",
+      "DISCOURAGE_UPGRADABLE_NOPS",
+      "CLEANSTACK"
+    ],
+    "maxtxsizepolicy": 99999,
+    "datacarriersize": 100000,
+    "maxscriptsizepolicy": 100000,
+    "maxscriptnumlengthpolicy": 100000,
+    "maxstackmemoryusagepolicy": 10000000,
+    "limitancestorcount": 1000,
+    "limitcpfpgroupmemberscount": 10,
+    "acceptnonstdoutputs": true,
+    "datacarrier": true,
+    "maxstdtxvalidationduration": 99,
+    "maxnonstdtxvalidationduration": 100,
+    "minconsolidationfactor": 10,
+    "maxconsolidationinputscriptsize": 100,
+    "minconfconsolidationinput": 10,
+    "acceptnonstdconsolidationinput": false
+  }
 }
 ```
 > Note: BSV Node v1.0.11 does not support "dustlimitfactor" and "dustrelayfee" policies, so they should not have been configured and will not be contained within the response
@@ -159,13 +173,20 @@ GET /mapi/feeQuote
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 404  | Not found | fee quote unavailable |
+
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-12T13:17:47.7498672Z\",\"expiryTime\":\"2021-11-12T13:27:47.7498672Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e\",\"currentHighestBlockHeight\":234,\"fees\":[{\"feeType\":\"standard\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}},{\"feeType\":\"data\",\"miningFee\":{\"satoshis\":500,\"bytes\":1000},\"relayFee\":{\"satoshis\":250,\"bytes\":1000}}]}",
-    "signature": "30440220708e2e62a393f53c43d172bc1459b4daccf9cf23ff77cff923f09b2b49b94e0a022033792bee7bc3952f4b1bfbe9df6407086b5dbfc161df34fdee684dc97be72731",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{see below}",
+  "signature": "3044022073df67507d4165b2973553c25bd8764891adb46990736bf62ec9ec732b05312e02203b49e9a5b080bdd1e8037032227c6a9f91266bf722337e8f930ff8f96b3b667d",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -175,36 +196,41 @@ The field definitions are the same as policy quote, above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-12T13:17:47.7498672Z",
-    "expiryTime": "2021-11-12T13:27:47.7498672Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "currentHighestBlockHash": "45628be2fe616167b7da399ab63455e60ffcf84147730f4af4affca90c7d437e",
-    "currentHighestBlockHeight": 234,
-    "fees": [
-        {
-            "feeType": "standard",
-            "miningFee": {
-                "satoshis": 500,
-                "bytes": 1000
-            },
-            "relayFee": {
-                "satoshis": 250,
-                "bytes": 1000
-            }
-        },
-        {
-            "feeType": "data",
-            "miningFee": {
-                "satoshis": 500,
-                "bytes": 1000
-            },
-            "relayFee": {
-                "satoshis": 250,
-                "bytes": 1000
-            }
-        }
-    ]
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-04T10:24:20.9876978Z",
+  "expiryTime": "2022-11-04T10:34:20.9876978Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "currentHighestBlockHash": "0de6608a75807ac1e2320851a355e4a804731d3c48478a527777da67bb1543ab",
+  "currentHighestBlockHeight": 151,
+  "fees": [
+    {
+      "feeType": "standard",
+      "miningFee": {
+        "satoshis": 500,
+        "bytes": 1000
+      },
+      "relayFee": {
+        "satoshis": 250,
+        "bytes": 1000
+      }
+    },
+    {
+      "feeType": "data",
+      "miningFee": {
+        "satoshis": 500,
+        "bytes": 1000
+      },
+      "relayFee": {
+        "satoshis": 250,
+        "bytes": 1000
+      }
+    }
+  ],
+  "callbacks": [
+    {
+      "ipAddress": "123.456.789.123"
+    }
+  ]
 }
 ```
 
@@ -228,13 +254,13 @@ Set `Content-Type` to `application/json`:
 
 ```json
 {
-    "rawtx": "[transaction_hex_string]",
-    "callBackUrl": "https://your.service.callback/endpoint",
-    "callBackToken": "<channel token>",
-    "merkleProof": true,
-    "merkleFormat": "TSC",
-    "dsCheck": true,
-    "callBackEncryption": "<parameter>"
+  "rawtx": "[transaction_hex_string]",
+  "callbackUrl": "https://your.service.callback/endpoint",
+  "callbackToken": "<channel token>",
+  "merkleProof": true,
+  "merkleFormat": "TSC",
+  "dsCheck": true,
+  "callbackEncryption": "<parameter>"
 }
 ```
 ##### Binary Data
@@ -248,8 +274,8 @@ For large transactions, binary is half the size of the hexadecimal equivalent al
 | field                       | function            |
 | ----------------------------|---------------------|
 | `rawtx`         | Hex encoded transaction   |
-| `callbackURL`   | HTTP(S) endpoint used to receive messages from the miner   |
-| `callbackToken` | HTTP authorization header used when authenticating against callbackURL |
+| `callbackUrl`   | HTTP(S) endpoint used to receive messages from the miner   |
+| `callbackToken` | HTTP authorization header used when authenticating against callbackUrl |
 | `merkleProof`   | used to request a Merkle proof    |
 | `merkleFormat`  | (optional) returns TSC compliant Merkle proof format if set to "TSC"   |
 | `dsCheck`       | used to request double spend notification  |
@@ -265,13 +291,27 @@ The format of the callbackEncryption parameter is:
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 4xx  | Client error | recoverable - correct the error (such as unauthorized) and resubmit the transaction |
+| 500  | Server error | node is reset or safe mode is triggered |
+| 503  | Server error | node is unreachable |
+| 5xx  | Server error | possibly recoverable – retry later |
+
+There is a small possibility that under exceptional circumstances no response will be forthcoming.
+
+For this reason, the merchant may wish to keep a record of all transactions submitted, and if no response is obtained within an acceptable timescale, the transaction may be resubmitted.
+
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T07:37:44.8783319Z\",\"txid\":\"fed22f5ab54202e2ec39cb745d427fcfff960254cde0cf283493ac545f5737f6\",\"returnResult\":\"success\",\"resultDescription\":\"\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"39e3a2a0e7ba1b9e331cfd396cef1a2d3baffa51624af2f5512e530f35a8aa43\",\"currentHighestBlockHeight\":151,\"txSecondMempoolExpiry\":0}",
-    "signature": "30440220160ff70b73297043a8ce9636f5abdc7d91918b4428e79876a405b080882d1c920220161b919399f50f16d8c9f922c13b94909d6e3a25480f09812c73f9ef52f8f542",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{see below}",
+  "signature": "304402201ced51b2b7043b8c4dbda6d161f4946638dc4544ab6e7b50d1aae5286d246102022046d2ae28ed6b3ac1e76e535b284053ef3676fd847386acfbfa69c25cd4ad9c42",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -281,18 +321,17 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.5.0",
-    "timestamp": "2022-11-13T07:37:44.8783319Z",
-    "txid": "fed22f5ab54202e2ec39cb745d427fcfff960254cde0cf283493ac545f5737f6",
-    "returnResult": "success",
-    "resultDescription": "",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "currentHighestBlockHash": "39e3a2a0e7ba1b9e331cfd396cef1a2d3baffa51624af2f5512e530f35a8aa43",
-    "currentHighestBlockHeight": 151,
-    "txSecondMempoolExpiry" : 0,
-    "warnings": "",
-    "failureRetryable": true,
-    "conflictedWith"" : ""
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-04T11:15:05.3509086Z",
+  "txid": "a5e22349ea116a2625f0efe94c827edf0144a18ca6293cb76996f86502b45854",
+  "returnResult": "success",
+  "resultDescription": "",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "currentHighestBlockHash": "1c748a050a366a7526d62fb9bba21145a8ba4d2e9b35facada6bf433cae57195",
+  "currentHighestBlockHeight": 151,
+  "txSecondMempoolExpiry": 0,
+  "warnings": [],
+  "failureRetryable": false
 }
 ```
 
@@ -302,12 +341,13 @@ The fields are specified above.
 | `returnResult`          | will contain either `success` or `failure` |
 | `resultDescription`     | will contain the error on `failure` or empty on `success`|
 | `txSecondMempoolExpiry` | duration (minutes) Tx will be kept in the secondary mempool |
-| `warnings`              | warnings provided by the system |
+| `warnings`              | any DSNT protocol warnings provided by the system |
 | `failureRetryable`      | if true indicates that the transaction may be resubmitted later |
 | `conflictedWith`        | list of double spend transactions |
 
+If returnResult is failure and failureRetryable is true, node probably has a temporary issue with the transaction. Retry or change the inputs and submit the new transaction.
 
-If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackURL. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
+If a double spend notification or Merkle proof is requested in Submit transaction, the Merkle proof or double spend notification will be sent to the specified callbackUrl. Where recipients are using [SPV Channels](https://github.com/bitcoin-sv-specs/brfc-spvchannels), this would require the recipient to have a channel set up and ready to receive messages. See [Callback Notifications](#callback-notifications) for details.
 
 #### Callback Reason
 
@@ -315,29 +355,35 @@ There is an option for the miner to provide a callback reason using `{callbackRe
 
 #### Request:
 ```json
-{
-    "rawTx": "0100000001b753fbcb4e99659468067c2512b64d80c593bf46d4b60f750dd77c59391c4210000000006a473044022000cc88f3feadbacfd93e2a1a723e4fa4a20ef329ab5daac3be962d973bee3fb5022031642f58b5fce72e531f9dcae49e74be95cdb2f59a312865517fa536581d85584121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
-    "callbackUrl": "https://your.service.callback/endpoint/{callbackReason}",
-    "callbackToken": "<channel token>",
-    "merkleProof": true,
-    "merkleFormat": "TSC",
-    "dsCheck": true,
-    "callbackEncryption": "<parameter>"
+{ 
+  "rawtx": "0100000001146124b21b5f47c0f73f2e6f3330ec16767fbe1b2a7d7e59910dafa373f20cc4010000006a473044022004518512354059aa97a59e371b03b5279a4d893d6db674e7c9228ccdd0e98bd8022032fb064e2324100fb0a7bfa23a66f62ce23b751b1babc58f1f827e2c26e6f10c4121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000", 
+  "merkleProof": true, 
+  "merkleFormat": "TSC", 
+  "dsCheck": true, 
+  "callbackUrl" : "https://your-server/api/v1/channel/533", 
+  "callbackToken": "CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw"
 }
 ```
 #### Response:
 
-An example TSC compliant Merkle proof callback, which will be sent to `https://your.service.callback/endpoint/merkleProof`:
+An example TSC compliant Merkle proof callback, which will be sent to `https://your-server/api/v1/channel/533/merkleProof`:
 ```json
 {
-    "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-04-30T08:06:13.4129624Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "blockHash": "2ad8af91739e9dc41ea155a9ab4b14ab88fe2a0934f14420139867babf5953c4",
-    "blockHeight": 105,
-    "callbackTxId": "e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6",
-    "callbackReason": "merkleProof"
+  "callbackPayload": {
+    "index": 1,
+    "txOrId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
+    "targetType": "header",
+    "target": "00000020e0b910e459b3547178c7bdde08e8cca07e12c79c3f78338ba540a20a1dfcb14a24778a76dc738a580df230c34db78fab25e25b6b6fe55e460b1245529583d53781ab6863ffff7f2002000000",
+    "nodes": [
+      "1a8e965ae9197e2a62d3c0a067a84de6108be89cce131bab0bcccaa1afb26542"
+    ]
+  },
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-07T06:53:31.9199309Z",
+  "blockHash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
+  "blockHeight": 153,
+  "callbackTxId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
+  "callbackReason": "merkleProof"
 }
 ```
 
@@ -359,12 +405,19 @@ GET /mapi/tx/{txid}?merkleProof=bool&merkleFormat=TSC
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid transaction ID |
+
 An example response with TSC compliant Merkle proof requested:
 ```json
 {
-  "payload": "{\"apiVersion\":\"1.5.0\",\"timestamp\":\"2022-10-14T07:37:32.8272043Z\",\"txid\":\"1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db\",\"returnResult\":\"success\",\"blockHash\":\"4da321c1550c35e13b5ba6ea252d32bc3d31d2d51d6182a1afdbc6d8492497e1\",\"blockHeight\":324,\"confirmations\":1,\"minerId\":\"029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1\",\"txSecondMempoolExpiry\":0,\"merkleProof\":{\"index\":2,\"txOrId\":\"1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db\",\"targetType\":\"header\",\"target\":\"0000002069191183f973fdb08b9880f7797bfcee39b7e5be179bb5f28d48c665095a1a51e6439c79ba1446eeae0cf1d5419acca760adce07b3bfba912f37bf828d06c8bafe104963ffff7f2000000000\",\"nodes\":[\"6969cfc4ca0956afb5bc06d9ad7595dc3ebbcf533bbfbf3d0901d81ee94f3826\",\"de34519da2777febd98027347a439bf83c9011177cef85116bdb66f609f94214\"]}}",
-  "signature": "304402207b92df19b708ffb55581b1cc401ad6ca044d485059520d6832b68feb6cc7f6cd0220553e50bfdacd0d9dec030a33faef6d3f18850c9c098324dcc6ceed8af81d0841",
-  "publicKey": "029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1",
+  "payload": "{see below}",
+  "signature": "3044022032ae5d570925bf9ba232fe54adc34f4794d5175132cac1e800d57b5ddfc10533022042ecc728c73a51dc3742a811de0f3ee7c1416877b6e0327703547e95f0f3ab3f",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
   "encoding": "UTF-8",
   "mimetype": "application/json"
 }
@@ -377,22 +430,22 @@ The fields are specified above.
 ```json
 {
   "apiVersion": "1.5.0",
-  "timestamp": "2022-10-14T07:37:32.8272043Z",
-  "txid": "1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db",
+  "timestamp": "2022-11-04T11:15:05.4765751Z",
+  "txid": "a5e22349ea116a2625f0efe94c827edf0144a18ca6293cb76996f86502b45854",
   "returnResult": "success",
-  "blockHash": "4da321c1550c35e13b5ba6ea252d32bc3d31d2d51d6182a1afdbc6d8492497e1",
-  "blockHeight": 324,
+  "blockHash": "1e22f9ffbb2dd74404f72b9e8d9699552c0579d30a393527670450e84ab378a9",
+  "blockHeight": 152,
   "confirmations": 1,
-  "minerId": "029d809c6e2c400dab4e65f1a4bc3749876b905651348ebc1629798ae05fba9da1",
-  "txSecondMempoolExpiry":0,
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "txSecondMempoolExpiry": 0,
   "merkleProof": {
-    "index": 2,
-    "txOrId": "1aa420c0266f70c4e48440c23f3f4154ea80ab58d82177583fbbf9e661dbc0db",
+    "index": 1,
+    "txOrId": "a5e22349ea116a2625f0efe94c827edf0144a18ca6293cb76996f86502b45854",
     "targetType": "header",
-    "target": "0000002069191183f973fdb08b9880f77...0bf828d06c8bafe104963ffff7f2000000000",
+    "target": "000000209571e5ca33f46bdacafa359b2e4dbaa84511a2bbb92fd626756a360a058a741c221a119911da40faccc8005f93b2c696a383f76303d8d39b82668bb8b8fc71f453f46463ffff7f2000000000",
     "nodes": [
       "6969cfc4ca0956afb5bc06d9ad7595dc3ebbcf533bbfbf3d0901d81ee94f3826",
-      "de34519da2777febd98027347a439bf83c9011177cef85116bdb66f609f94214"
+      "054cd18407e15dfd6c088aab4e577822ef536556d3a0346e69ef1ba90ca5ad25"
     ]
   }
 }
@@ -403,8 +456,8 @@ The Merkle proof is provided and is compliant with the [TSC Specification](https
 
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T07:48:49.7666999Z\",\"txid\":\"6886cd04977d4cd26df3689b2d3c40b13685edb41fcc21c2962c5fc64560acff\",\"returnResult\":\"success\",\"blockHash\":\"236337115fef235a5d59cfcdf213cd70a86d6249a10eacf041468f15607094de\",\"blockHeight\":152,\"confirmations\":1,\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"txSecondMempoolExpiry\":0}",
-    "signature": "3044022039b759b4e80f13e1c91b40a42ac777704d3866b2f24432f57236b44fdfae13fe0220544a3853eb8d58f973a14dbec7e16c56a8242a8e68722102ed70de79a2b1455e",
+    "payload": "{see below}",
+    "signature": "3044022072400cf95d26d7de612745168ac96f0c64caa499630e3a9dba49d951b433bc880220504a50d20dc051f2950df22ea0f4ba96f38461e827ab8a129865f2bfb8f94dc0",
     "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
     "encoding": "UTF-8",
     "mimetype": "application/json"
@@ -417,15 +470,15 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-13T07:48:49.7666999Z",
-    "txid": "6886cd04977d4cd26df3689b2d3c40b13685edb41fcc21c2962c5fc64560acff",
-    "returnResult": "success",
-    "blockHash": "236337115fef235a5d59cfcdf213cd70a86d6249a10eacf041468f15607094de",
-    "blockHeight": 152,
-    "confirmations": 1,
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "txSecondMempoolExpiry": 0
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-04T11:15:05.4941355Z",
+  "txid": "a5e22349ea116a2625f0efe94c827edf0144a18ca6293cb76996f86502b45854",
+  "returnResult": "success",
+  "blockHash": "1e22f9ffbb2dd74404f72b9e8d9699552c0579d30a393527670450e84ab378a9",
+  "blockHeight": 152,
+  "confirmations": 1,
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "txSecondMempoolExpiry": 0
 }
 ```
 
@@ -466,13 +519,20 @@ You can also omit *callbackUrl*, *callbackToken*, *merkleProof*,*merkleFormat* a
 
 #### Response:
 
+HTTP response codes include:
+
+| code | meaning | description |
+| ---- | ------- | ----------- |
+| 200  | Ok      | has the following JSON body |
+| 400  | Bad Request | invalid request |
+
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T08:31:56.5722511Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"08dc4bb006fc7e7186544343c3ccbb5a773d0a19cd2ccff1fa52f51eb6faf2ab\",\"currentHighestBlockHeight\":151,\"txSecondMempoolExpiry\":0,\"txs\":[{\"txid\":\"3145011f34a00d0666ea265b87c8e44108f87d3b53b853976906519ee8e1475f\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\",\"conflictedWith\":[{\"txid\":\"86e1b384d3d169fd6aa4d34cf2d6f487436da54154befaab5a1fb25f844d65a8\",\"size\":191,\"hex\":\"01000000010136836d73f29cbe648bc2aeea20286502a3c2f2d3cff54522d0cc76bb755e9f000000006a4730440220761fb63128d4184fc142f2e854c499c52422db0136191f29f0bbe0969b6021770220536d72606d49dbbd244d2633b8b19031234138f045c530cc773e6e72bb34c62c4121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}]},{\"txid\":\"c8a087b1ee775fa29697511ecd64e800941c8a22db6ed0989fb27a1d2d6798da\",\"returnResult\":\"success\",\"resultDescription\":\"\"}],\"failureCount\":1}",
-    "signature": "304402200c4b0dc179906581eb32953abeddbef5799d302d82367aa9a469d79c15f932f3022029e827af6122290d5e1b80c50676b0336f4c7658ca67ba4819396dff9c6239a6",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{see below}",
+  "signature": "304402207fee9b97fcbc6783848ce266d27d9454ac02e963d431b46eb6c9de8da308f9a402203dfed83378d136665a5a7ced1147fd7ba3dd59040b354aa5fb307c5fab484ab9",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -482,32 +542,41 @@ The fields are specified above.
 
 ```json
 {
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-13T08:31:56.5722511Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "currentHighestBlockHash": "08dc4bb006fc7e7186544343c3ccbb5a773d0a19cd2ccff1fa52f51eb6faf2ab",
-    "currentHighestBlockHeight": 151,
-    "txSecondMempoolExpiry": 0,
-    "txs": [
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-04T11:36:51.6458429Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "currentHighestBlockHash": "3ebda38de3d491626bd2e971d0b0c4fb013a50db4e726e07d95d4c4101f9f351",
+  "currentHighestBlockHeight": 151,
+  "txSecondMempoolExpiry": 0,
+  "txs": [
+    {
+      "txid": "7fb40b4c18ca267aa5ab3a042ef8608c1f90e73ff171ce876c2d2242ed79c65d",
+      "returnResult": "failure",
+      "resultDescription": "Missing inputs",
+      "failureRetryable": false
+    },
+    {
+      "txid": "9bb85570cc2117aa6ddbf36c88e4111a5d5af7a454f39fda957f295f110a9908",
+      "returnResult": "failure",
+      "resultDescription": "18 txn-double-spend-detected",
+      "failureRetryable": false,
+      "conflictedWith": [
         {
-            "txid": "3145011f34a00d0666ea265b87c8e44108f87d3b53b853976906519ee8e1475f",
-            "returnResult": "failure",
-            "resultDescription": "Missing inputs",
-            "conflictedWith": [
-                {
-                    "txid": "86e1b384d3d169fd6aa4d34cf2d6f487436da54154befaab5a1fb25f844d65a8",
-                    "size": 191,
-                    "hex": "01000000010136836d73f29cbe648bc2aeea20286502a3c2f2d3cff54522d0cc76bb755e9f000000006a4730440220761fb63128d4184fc142f2e854c499c52422db0136191f29f0bbe0969b6021770220536d72606d49dbbd244d2633b8b19031234138f045c530cc773e6e72bb34c62c4121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000"
-                }
-            ]
-        },
-        {
-            "txid": "c8a087b1ee775fa29697511ecd64e800941c8a22db6ed0989fb27a1d2d6798da",
-            "returnResult": "success",
-            "resultDescription": ""
+          "txid": "da8b5b87a013fcf86d830541ccb6e96bea10727e6f4cc19c388f37b116623af6",
+          "size": 191,
+          "hex": "0100000001de83b214c2403e126ba8641417f28166faf09d349de4b0dc1afd9d4c06d9458a000000006a473044022066ee22d714cfcda6497243fb281b88688a69b294a9fe09bfbdba7f8a1c80d850022073878eae7c775cb29dc1162a56bce173e6c31cc227f692f49176c42dbfa523654121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000"
         }
-    ],
-    "failureCount": 1
+      ]
+    },
+    {
+      "txid": "da8b5b87a013fcf86d830541ccb6e96bea10727e6f4cc19c388f37b116623af6",
+      "returnResult": "success",
+      "resultDescription": "",
+      "warnings": [],
+      "failureRetryable": false
+    }
+  ],
+  "failureCount": 2
 }
 ```
 
@@ -580,11 +649,11 @@ POST /mapi/txouts?includeMempool=false
 
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.5.0\",\"timestamp\":\"2022-10-17T05:43:12.9408765Z\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"returnResult\":\"success\",\"txouts\":[{\"error\":\"spent\",\"collidedWith\":{\"txid\":\"c34ef6de079a1e3c738b0681fca06257f16369766ae3c768bb179c0a85550b32\",\"size\":259,\"hex\":\"01000000010048d519060267e8ff30a4190ff635e754cc5cdf0f1964c346e1aa053f73c10b000000006a47304402201bcc6e4ca8aa2e1c7eaec7f27451b1a19cdfe5f2dd91e4f11080d6345d1a921d02206f41d8068e34287f8e4cb79a5e10f986f8507818f602f28a7d946965e3361b57412103b1fb82639861ef2a329aa3d879bc42c813df793935ad2f0196c2245240393b25ffffffff0355a8ab31000000001976a914798889cb2e7002facbb3c8367c02321cbcc3b13388ac55a8ab31000000001976a914798889cb2e7002facbb3c8367c02321cbcc3b13388ac68a7ab31000000001976a914d4bbba35bec09f4ea9a61573233a1608705a509d88ac00000000\"}},{\"scriptPubKey\":\"76a914d4bbba35bec09f4ea9a61573233a1608705a509d88ac\",\"scriptPubKeyLen\":25,\"value\":25.00000000,\"isStandard\":true,\"confirmations\":201},{\"error\":\"missing\"}]}",
-    "signature": "304402207a6469871bc290c3e98a05febf7863b261c274904b8f8ea8eae1f9b18ce8253602203f5bdc8c9a6d0126f0ee8cb5c057cad9b64ea1e7df9515a98a50012f48c1c9b3",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{see below}",
+  "signature": "3044022070fe38f31e960d1116dab5d077b2f2a1c4ab1357bf8ba09dd5177df98bb0a86c02202eba4c49c3dabcba1d4ca6b5db5b355704819f99d0406856e33f8d221d8ae3d4",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
@@ -593,24 +662,25 @@ POST /mapi/txouts?includeMempool=false
 ```json
 {
   "apiVersion": "1.5.0",
-  "timestamp": "2022-10-17T05:43:12.9408765Z",
-  "minerId": "030d1fe5c1b560efe196ba324...0daa9504c4c4cec6184fc702d9f274e",
+  "timestamp": "2022-11-04T09:44:29.7095472Z",
+  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
   "returnResult": "success",
   "txouts": [
     {
+      "scriptPubKeyLen": 25,
+      "confirmations": 1
+    },
+    {
       "error": "spent",
-      "collidedWith": { 
-        "txid": "c34ef6de079a1ev54tg...257f16369766ae3c768bb179c0a85550b32",
-        "size": 259,
-        "hex": "01000000010048d9060267e8ff30a4635e754c...3233a1608705a509d88ac00000000"
+      "collidedWith": {
+        "txid": "40577399c21b680c28b03d0d0c8ae6330539c9ff538955a25ff0bd0b53aa9136",
+        "size": 191,
+        "hex": "010000000175d5ae40a19cc2eeb9d6d2939ee0f2769f79376969d9547df521f19f1266fc06000000006a473044022003ae93c8b0bebf06ee66d1d82a9dd24f5d540a507b35707b1494152e225e216102200578d481aaa36a0d14697eb1bf2dfce62ddb2725c20ab6da0a2bea05616fe03e4121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff01b08e9800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000"
       }
     },
     {
-      "scriptPubKey": "76a914d4bbba35bec09f9...83233a1608705a509d88ac",
       "scriptPubKeyLen": 25,
-      "value": 25.00000000,
-      "isStandard": true,
-      "confirmations": 201
+      "confirmations": 0
     },
     {
       "error": "missing"
@@ -618,10 +688,12 @@ POST /mapi/txouts?includeMempool=false
   ]
 }
 ```
-In this example, the 3 transaction outputs align with the 3 requests. 
-The first “txouts” array entry shows that the txid collided with a different txid. 
-The second entry returns all the fields (the default) about the transaction output. 
-The third entry shows that the transaction output is “missing”. 
+
+In this example, the “txouts” array aligns with the input transaction requests. 
+The first entry shows all the fields requested about the transaction output. 
+The second entry shows that the txid collided with a different txid. 
+The third entry shows all the fields requested about the transaction output.
+The fourth entry shows that the transaction output is “missing”. 
 This is either because the transaction output has not reached the blockchain, or because it has been spent.
 
 ### Callback Notifications
@@ -647,7 +719,7 @@ Request Body:
 
 ```json
 {
-    "rawtx": "01000000015d7d8ffefc2b95a68a95d8e3c50715f8affc0e56ef58a05c773789e6fa3eb537010000006a47304402206c1ba36989bdca944c4ac1e74c23afaaf93fb6ded3a3d6e01f2c28667373c26e0220676085f6fe30071022ea5c8e790e7d9cf52671d0bc3c4d374991be65b6e11bc34121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000",
+    "rawtx": "0100000001106d69baf775bf023e98c713b78d8df44a07ab06c2e38598e52b223cef4d71f4010000006a47304402200254591bed254f9022eb8b119bebc2e79017d413fa1d1a05f4b6b7d101363a3c022040390ae692b83a852d61c062d93ee584354f61cd0ea8b930a8108b6d4e4217204121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0298929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac000000000000000010006a0464736e740801017f000001010000000000",
     "callbackUrl": "https://your-server/api/v1/channel/533",
     "callbackToken": "CNaecHA44nGNJCvvccx3TSxwb4F490574knnkf44S19W6cNmbumVa6k3ESQw",
     "merkleProof": false,
@@ -659,19 +731,31 @@ Request Body:
 #### Response:
 ```json
 {
-    "payload": "{\"apiVersion\":\"1.4.0\",\"timestamp\":\"2021-11-13T08:04:25.9291559Z\",\"txid\":\"0d0ad5677eb0862f94b3eda7f13633f91cf7c4c8c14e1451ffd333d52ff8e207\",\"returnResult\":\"failure\",\"resultDescription\":\"Missing inputs\",\"minerId\":\"030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e\",\"currentHighestBlockHash\":\"100677f99bdd7d4f0b8ea3f35d575d0f69a80f89b5b5f14e11005f57e5e63ef5\",\"currentHighestBlockHeight\":151,\"txSecondMempoolExpiry\":0,\"conflictedWith\":[{\"txid\":\"9f817649adde97338bcda695ee13ae1c71960eac60e49671fed0bdcf45581d94\",\"size\":191,\"hex\":\"01000000015d7d8ffefc2b95a68a95d8e3c50715f8affc0e56ef58a05c773789e6fa3eb537010000006a47304402206a9372778ff1ea314cfb2ec4e6bc93a57fe67c5ca915d004850f8079c876977c022066e3581cbec0eb2d525d4d83d01fff4f4e0b13a477f4f6a07d9168cc40bbabe54121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff0198929800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}]}",
-    "signature": "3044022048739a74a7f14b870d410f02c60dafcee2899348c7cd1184977e9ac5096ba63a022038ca0066645d1201ba0f385bd88da4c9bc7410582ae7bb3e248d79b7dbcfd205",
-    "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "encoding": "UTF-8",
-    "mimetype": "application/json"
+  "payload": "{
+    "apiVersion": "1.5.0",
+    "timestamp": "2022-11-07T07:05:37.9417712Z",
+    "txid": "8bd5ce05e88761060d86a8ad17dd523b1e0031b922c6890f2c09204286f694d3",
+    "returnResult": "success",
+    "resultDescription": "",
+    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+    "currentHighestBlockHash": "2132371c818dfd45f0ff34e74c30ca80ea9054d02f43d5cbc8177c548acd5e1a",
+    "currentHighestBlockHeight": 151,
+    "txSecondMempoolExpiry": 0,
+    "warnings":[],
+    "failureRetryable": false
+  }",
+  "signature": "3044022076a40fcbb4348e86e99c2703cc5dc4842ca1170b0cb3c3ad98d7d52abe32d46f022029556cf236d224ff513c2c926db2b0312b13885e88416bb46894da45b1e51350",
+  "publicKey": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
+  "encoding": "UTF-8",
+  "mimetype": "application/json"
 }
 ```
 
 Merkle proof callback can be requested by specifying:
 ```json
 {
-    "merkleProof": true,
-    "merkleFormat": "TSC"
+  "merkleProof": true,
+  "merkleFormat": "TSC"
 }
 ```
 If the optional merkleFormat is set to "TSC" then a TSC compliant version of the merkle proof is returned.
@@ -681,15 +765,17 @@ Callbacks have these possible callbackReasons: "doubleSpend", "doubleSpendAttemp
 
 Double spend callback example:
 ```json
-{	
-    "callbackPayload": "{\"doubleSpendTxId\":\"f1f8d3de162f3558b97b052064ce1d0c45805490c210bdbc4d4f8b44cd0f143e\", \"payload\":\"01000000014979e6d8237d7579a19aa657a568a3db46a973f737c120dffd6a8ba9432fa3f6010000006a47304402205fc740f902ccdadc2c3323f0258895f597fb75f92b13d14dd034119bee96e5f302207fd0feb68812dfa4a8e281f9af3a5b341a6fe0d14ff27648ae58c9a8aacee7d94121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}",
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-03T13:24:31.233647Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "blockHash": "34bbc00697512058cb040e1c7bbba5d03a2e94270093eb28114747430137f9b7",
-    "blockHeight": 153,
-    "callbackTxId": "8750e986a296d39262736ed8b8f8061c6dce1c262844e1ad674a3bc134772167",
-    "callbackReason": "doubleSpend"
+{
+  "callbackPayload": {
+    "doubleSpendTxId": "7dddd41d4f1443bd02490ffbcadc746e47db320e8cd7f434fb1e6c2d6676fb5f",
+    "payload": "0100000001106d69baf775bf023e98c713b78d8df44a07ab06c2e38598e52b223cef4d71f4010000006a47304402205bb1b0f4989940fb532e61b7bfc531a8b0a9b76e520c7d5048c3202cb90984d102202cb77d7e03cb68e0d306db330e90b548d3f0cf705cf237d918bdbea7c351ddc94121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000"
+  },
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-07T07:05:39.6319722Z",
+  "blockHash": "45eb0406bc8ff14c0cf90af391a3d3a22e22ea948c32d50e81f1a4dc2cf1d7cf",
+  "blockHeight": 152,
+  "callbackTxId": "8bd5ce05e88761060d86a8ad17dd523b1e0031b922c6890f2c09204286f694d3",
+  "callbackReason": "doubleSpend"
 }
 ```
 
@@ -703,42 +789,73 @@ Double spend callback example:
 
 Double spend attempt callback example:
 ```json
-{	
-    "callbackPayload": "{\"doubleSpendTxId\":\"7ea230b1610768374285150537323add313c1b9271b1b8110f5ddc629bf77f46\", \"payload\":\"0100000001e75284dc47cb0beae5ebc7041d04dd2c6d29644a000af67810aad48567e879a0000000006a47304402203d13c692142b4b50737141145795ccb5bb9f5f8505b2d9b5a35f2f838b11feb102201cee2f2fe33c3d592f5e990700861baf9605b3b0199142bbc69ae88d1a28fa964121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000\"}",
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-03T13:24:31.233647Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "blockHash": "34bbc00697512058cb040e1c7bbba5d03a2e94270093eb28114747430137f9b7",
-    "blockHeight": 153,
-    "callbackTxId": "8750e986a296d39262736ed8b8f8061c6dce1c262844e1ad674a3bc134772167",
-    "callbackReason": "doubleSpendAttempt"
+{
+  "callbackPayload": {
+    "doubleSpendTxId": "7dddd41d4f1443bd02490ffbcadc746e47db320e8cd7f434fb1e6c2d6676fb5f",
+    "payload": "0100000001106d69baf775bf023e98c713b78d8df44a07ab06c2e38598e52b223cef4d71f4010000006a47304402205bb1b0f4989940fb532e61b7bfc531a8b0a9b76e520c7d5048c3202cb90984d102202cb77d7e03cb68e0d306db330e90b548d3f0cf705cf237d918bdbea7c351ddc94121027ae06a5b3fe1de495fa9d4e738e48810b8b06fa6c959a5305426f78f42b48f8cffffffff018c949800000000001976a91482932cf55b847ffa52832d2bbec2838f658f226788ac00000000"
+  },
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-07T07:05:38.04574Z",
+  "blockHash": "",
+  "blockHeight": -1,
+  "callbackTxId": "8bd5ce05e88761060d86a8ad17dd523b1e0031b922c6890f2c09204286f694d3",
+  "callbackReason": "doubleSpendAttempt"
 }
 ```
 
 Merkle proof callback example:
 ```json
 {
-    "callbackPayload": "{\"flags\":2,\"index\":1,\"txOrId\":\"acad8d40b3a17117026ace82ef56d269283753d310ddaeabe7b5d226e8dbe973\",\"target\": {\"hash\":\"0e9a2af27919b30a066383d512d64d4569590f935007198dacad9824af643177\",\"confirmations\":1,\"height\":152,\"version\":536870912,\"versionHex\":\"20000000\",\"merkleroot\":\"0298acf415976238163cd82b9aab9826fb8fbfbbf438e55185a668d97bf721a8\",\"num_tx\":2,\"time\":1604409778,\"mediantime\":1604409777,\"nonce\":0,\"bits\":\"207fffff\",\"difficulty\":4.656542373906925E-10,\"chainwork\":\"0000000000000000000000000000000000000000000000000000000000000132\",\"previousblockhash\":\"62ae67b463764d045f4cbe54f1f7eb63ccf70d52647981ffdfde43ca4979a8ee\"},\"nodes\":[{\"5b537f8fba7b4057971f7e904794c59913d9a9038e6900669d08c1cf0cc48133\"}]}",
-    "apiVersion": "1.4.0",
-    "timestamp": "2021-11-03T13:22:42.1341243Z",
-    "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-    "blockHash": "0e9a2af27919b30a066383d512d64d4569590f935007198dacad9824af643177",
-    "blockHeight": 152,
-    "callbackTxId": "acad8d40b3a17117026ace82ef56d269283753d310ddaeabe7b5d226e8dbe973",
-    "callbackReason": "merkleProof"
+  "callbackPayload": {
+    "flags": 2,
+    "index": 1,
+    "txOrId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
+    "target": {
+      "hash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
+      "confirmations": 1,
+      "height": 153,
+      "version": 536870912,
+      "versionHex": "20000000",
+      "merkleroot": "37d583955245120b465ee56f6b5be225ab8fb74dc330f20d588a73dc768a7724",
+      "num_tx": 2,
+      "time": 1667804033,
+      "mediantime": 1667804032,
+      "nonce": 2,
+      "bits": "207fffff",
+      "difficulty": 4.656542373906925E-10,
+      "chainwork": "0000000000000000000000000000000000000000000000000000000000000134",
+      "previousblockhash": "4ab1fc1d0aa240a58b33783f9cc7127ea0cce808debdc7787154b359e410b9e0"
+    },
+    "nodes": [
+      "1a8e965ae9197e2a62d3c0a067a84de6108be89cce131bab0bcccaa1afb26542"
+    ]
+  },
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-07T06:53:31.9136093Z",
+  "blockHash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
+  "blockHeight": 153,
+  "callbackTxId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
+  "callbackReason": "merkleProof"
 }
 ```
 
 TSC Merkle proof callback example:
 ```json
 {
-  "callbackPayload": "{\"index\":1,\"txOrId\":\"e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6\",\"targetType\":\"header\",\"target\":\"00000020a552fb757cf80b7341063e108884504212da2f1e1ce2ad9ffc3c6163955a27274b53d185c6b216d9f4f8831af1249d7b4b8c8ab16096cb49dda5e5fbd59517c775ba8b60ffff7f2000000000\",\"nodes\":[\"30361d1b60b8ca43d5cec3efc0a0c166d777ada0543ace64c4034fa25d253909\",\"e7aa15058daf38236965670467ade59f96cfc6ec6b7b8bb05c9a7ed6926b884d\",\"dad635ff856c81bdba518f82d224c048efd9aae2a045ad9abc74f2b18cde4322\",\"6f806a80720b0603d2ad3b6dfecc3801f42a2ea402789d8e2a77a6826b50303a\"]}",
-  "apiVersion": "1.4.0",
-  "timestamp": "2021-04-30T08:06:13.4129624Z",
-  "minerId": "030d1fe5c1b560efe196ba40540ce9017c20daa9504c4c4cec6184fc702d9f274e",
-  "blockHash": "2ad8af91739e9dc41ea155a9ab4b14ab88fe2a0934f14420139867babf5953c4",
-  "blockHeight": 105,
-  "callbackTxId": "e7b3eefab33072e62283255f193ef5d22f26bbcfc0a80688fe2cc5178a32dda6",
+  "callbackPayload": {
+    "index": 1,
+    "txOrId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
+    "targetType": "header",
+    "target": "00000020e0b910e459b3547178c7bdde08e8cca07e12c79c3f78338ba540a20a1dfcb14a24778a76dc738a580df230c34db78fab25e25b6b6fe55e460b1245529583d53781ab6863ffff7f2002000000",
+    "nodes": [
+      "1a8e965ae9197e2a62d3c0a067a84de6108be89cce131bab0bcccaa1afb26542"
+    ]
+  },
+  "apiVersion": "1.5.0",
+  "timestamp": "2022-11-07T06:53:31.9199309Z",
+  "blockHash": "33e3843a642788586cc28cb9748e150335e4365d73eff6d4e9c63a4bda629070",
+  "blockHeight": 153,
+  "callbackTxId": "0ad8f51caafee78f59faeff5dfe15d84da5e4069f64353590cd523c0d24a4287",
   "callbackReason": "merkleProof"
 }
 ```
