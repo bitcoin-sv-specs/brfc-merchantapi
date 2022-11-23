@@ -1,6 +1,6 @@
 ## RFC Notice
 
-ReadMe version 1.5.0.
+ReadMe version 1.5.0a.
 
 This draft spec is released as an RFC (request for comment) as part of the public review process. Any comments, criticisms or suggestions should be directed toward the [issues page](https://github.com/bitcoin-sv-specs/brfc-merchantapi/issues) on this github repository.
 
@@ -19,6 +19,16 @@ mAPI v1.5.0 requires BSV Node v1.0.10 or later.
 
 Merchant API (mAPI) is an additional service that miners can offer to merchants.
 It enables merchants to get policy and fee quotes for submitting transactions, submit the transaction and query the transaction status.
+
+## Enhancements
+
+The following improvements have been made to mAPI v1.5.0:
+
+* mAPI records submitted transactions and monitors nodes’ mempool, so that if node fails after a transaction has been received, mAPI is able to resubmit the transaction on behalf of the merchant
+* If mAPI resubmits a transaction or submits a transaction that has already been mined, and node returns an error such as TransactionAlreadyKnown, then mAPI maps that into a successful result for the merchant, who is able to resubmit without problems even in the case of network failure
+* If mAPI gets mixed results from multiple nodes, it maps that into a successful result for the merchant which relieves merchants from parsing the response to determine what happened and what should be done about it
+* An indication that the transaction may be resubmitted is given by the submit transaction response payload failureRetryable flag which relieves merchants from parsing the rest of the response to determine what happened and what should be done about it
+* Once a miner accepts a transaction, that miner commits to mining it in a future block, which relieves merchants from having to repeatedly query and resubmit their transactions to ensure that they will be mined 
 
 ### Data Flow Diagram
 
