@@ -26,7 +26,7 @@ The following improvements have been made to mAPI v1.5.0:
 
 * mAPI records submitted transactions and monitors nodes’ mempool, so that if node fails after a transaction has been received, mAPI is able to resubmit the transaction on behalf of the merchant
 * If mAPI resubmits a transaction or submits a transaction that has already been mined, and node returns an error such as TransactionAlreadyKnown, then mAPI maps that into a successful result for the merchant, who is able to resubmit without problems even in the case of network failure
-* If mAPI gets mixed results from multiple nodes, it maps that into a successful result for the merchant which relieves merchants from parsing the response to determine what happened and what should be done about it
+* If mAPI gets mixed results from multiple nodes, which indicates that at least one node has accepted the transaction, mAPI maps the results into success for the merchant which relieves them from parsing the response to determine what happened and what should be done about it
 * An indication that the transaction may be resubmitted is given by the submit transaction response payload failureRetryable flag which relieves merchants from parsing the rest of the response to determine what happened and what should be done about it
 * Once a miner accepts a transaction, that miner commits to mining it in a future block, which relieves merchants from having to repeatedly query and resubmit their transactions to ensure that they will be mined 
 
